@@ -5,13 +5,17 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
+  <h2>HOME PAGEEE</h2>
+  <button (tap)="goTo()"> go To about pages</button>
+
+  <h3>Loading: {{loading$ | async }}</h3>
+  <h4>Response : {{response$ | async | json}}</h4>
+  <h1><button (click)="login()">LOGIN</button></h1>
   <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
+    This starter project comes with simple tabs-based layout for apps that are going to primarily use a Tabbed UI.
   </p>
   <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
+    Take a look at the
+    <code>src/pages/</code> directory to add or change tabs, update any existing page or create new pages.
   </p>
 </ion-content>

@@ -1,0 +1,1 @@
+export { RecordInfoComponent } from './record-info.component';

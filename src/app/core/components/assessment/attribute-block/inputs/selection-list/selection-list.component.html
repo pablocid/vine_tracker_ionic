@@ -1,0 +1,132 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+    <h1>selection list </h1>
+    <!-- <md-nav-list>
+        <md-list-item>
+            <md-icon md-list-icon>{{avatar}}</md-icon>
+            <h4 md-line>{{shortName | uppercase}}</h4>
+            <p md-line> {{name}} </p>
+            <md-icon *ngIf="existValue">check_circle</md-icon>
+        </md-list-item>
+    </md-nav-list> -->
+</ng-template>
+
+<ng-template #cardViewTmpl>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
+                <ion-icon name="create" *ngIf="!(existValue$ | async)"></ion-icon>
+                {{ shortName$ | async | uppercase}}
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content padding>
+            <ion-grid *ngIf="(option$ | async) as option">
+                <ion-row>
+                    <ion-col col-12 style="text-align:center;">
+                        <ion-card-title> {{option.value | uppercase}} </ion-card-title>
+                    </ion-col>
+                </ion-row>
+                <ion-col col-4 offset-3>
+                    <img *ngIf="option.image" [src]="option.image" alt="" (click)="showImage(option.image, option.value)" style="cursor:pointer;">
+                </ion-col>
+                <ion-row>
+
+                </ion-row>
+            </ion-grid>
+            <button ion-button full large (click)="assess()">
+                <i class="fa fa-edit"></i>&nbsp;
+                <span *ngIf="!(existValue$ | async)">EVALUAR</span>
+                <span *ngIf="existValue$ | async">EDITAR</span>
+            </button>
+        </ion-card-content>
+    </ion-card>
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content *ngIf="(option$ | async) as option" fxLayout="row" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center center">
+            <h2>{{option.value | uppercase}} </h2>
+            <img *ngIf="option.image" [src]="option.image" width="100" alt="" (click)="showImage(option.image, option.value)" style="cursor:pointer;">
+        </md-card-content>
+        <md-card-actions *ngIf="editable" fxLayoutAlign="end start" fxLayout="row" fxLayoutGap="50px">
+            <button md-button color="primary" (click)="assess()">EVALUAR</button>
+        </md-card-actions>
+    </md-card> -->
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <ion-grid style="padding:10px;">
+        <ion-row>
+            <ion-col *ngFor="let option of options$ | async" (click)="localValue = option.id">
+                <img *ngIf="option.image" [src]="option.image">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-list radio-group [(ngModel)]="localValue" (ionChange)="onChangeRadio()">
+        <ion-item *ngFor="let option of options$ | async" class="font-selection-list">
+            <ion-label>{{option.value | uppercase}}</ion-label>
+            <ion-radio checked="true" [value]="option.id"></ion-radio>
+        </ion-item>
+    </ion-list>
+
+    <button class="button-space" color="secondary" ion-button icon-right full large (click)="save()">
+        <i class="fa fa-save"></i> &nbsp; SAVE
+    </button>
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+        <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+    </button>
+    <button class="button-space" color="light" ion-button icon-left full large (click)="reset()">
+        <i class="fa fa-circle-thin"></i>&nbsp; RESET
+    </button>
+    <!-- <h1>selection list </h1>
+    <h2>localValue: {{localValue}}</h2>
+    <ion-item *ngFor="let option of options$ | async">
+        <h1>{{option.value}}</h1>
+        <img *ngIf="option.image" [src]="option.image" style="width:auto; height:150px;">
+        <br>
+
+        <ion-label>{{ shortName$ | async | uppercase}}</ion-label>
+        <ion-select interface="action-sheet"  [(ngModel)]="localValue" (ngModelChange)="onChangeRadio()">
+            <ion-option [value]="option.id" *ngFor="let option of options$ | async">{{option.value | uppercase}}</ion-option>
+        </ion-select>
+    </ion-item> -->
+    <!-- <md-card class="attr-card">
+
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon color="accent">{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+
+        <md-card-content fxLayout="column" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center center">
+            <md-radio-group fxLayout="row" fxLayoutGap="10px" fxLayoutWrap fxLayoutAlign="center center" [(ngModel)]="localValue" (change)="onChangeRadio(a)">
+                <md-radio-button class="select-radio-button" color="primary" *ngFor="let option of options$ | async" [value]="option.id">
+                    <img class="select-radio-button-image" *ngIf="option.image" [src]="option.image" style="width:auto; height:150px;"><br>
+                    <div class="select-radio-button-title">{{option.value | uppercase}}</div>
+                </md-radio-button>
+            </md-radio-group>
+        </md-card-content>
+
+        <md-card-actions *ngIf="editable" style="margin-top:70px;" fxLayout="row" fxLayoutAlign="space-between center">
+            <button md-button color="warn" (click)="reset()">RESET</button>
+            <div>
+                <button md-button color="primary" (click)="save()">GUARDAR</button>
+                <button md-button color="warn" (click)="cancel()">CANCELAR</button>
+            </div>
+        </md-card-actions>
+
+    </md-card> -->
+</ng-template>

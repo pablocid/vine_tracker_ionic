@@ -1,40 +1,44 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
+import { VineTrackerApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { CoreStoreModule } from './core/store/store.module';
+
+import { HttpModule, Http } from '@angular/http';
+import { AuthenticatedHttpService } from './core/services/http-interceptor/http-interceptor.service';
+
+import { FaIconComponent } from './core/components/fa-icon/fa-icon.component';
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
+    VineTrackerApp,
     ContactPage,
-    HomePage,
-    TabsPage
+    TabsPage,
+    FaIconComponent
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(VineTrackerApp),
+    CoreStoreModule,
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    AboutPage,
+    VineTrackerApp,
     ContactPage,
-    HomePage,
     TabsPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    { provide: Http, useClass: AuthenticatedHttpService },
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
   ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,130 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+    <h1>number list </h1>
+    <!-- <md-nav-list>
+        <md-list-item>
+            <md-icon md-list-icon color="accent">{{avatar}}</md-icon>
+            <h4 md-line>{{shortName | uppercase}}</h4>
+            <p md-line> {{name}} </p>
+    <md-icon *ngIf="existValue">check_circle</md-icon>
+    </md-list-item>
+    </md-nav-list> -->
+</ng-template>
+
+<ng-template #cardViewTmpl>
+
+
+
+
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
+                <ion-icon name="create" *ngIf="!(existValue$ | async)"></ion-icon>
+                {{ shortName$ | async | uppercase}}
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <h1 *ngIf="existValue$ | async" style="padding:30px; font-size:40; text-align:center;">
+                {{value$ | async}} {{unit$ | async }}
+            </h1>
+
+            <button ion-button full large (click)="assess()">
+                <i class="fa fa-edit"></i>&nbsp;
+                <span *ngIf="!(existValue$ | async)">EVALUAR</span>
+                <span *ngIf="existValue$ | async">EDITAR</span>
+            </button>
+        </ion-card-content>
+    </ion-card>
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content *ngIf="existValue$ | async" fxLayout="column" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center center">
+            <h2 style="background-color:gray; color:white; padding:30px; border-radius:5px">{{value$ | async}} {{unit$ | async }}</h2>
+        </md-card-content>
+        <md-card-actions *ngIf="editable" fxLayoutAlign="end start" fxLayout="row" fxLayoutGap="50px">
+            <button md-button color="primary" (click)="assess()">EVALUAR</button>
+        </md-card-actions>
+    </md-card> -->
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <ion-grid>
+        <ion-row>
+                <ion-col col-4><h3>enteros</h3></ion-col>
+                <ion-col col-4><h3>decimales</h3></ion-col>
+                <ion-col col-4><h3>unidad</h3></ion-col>
+            <ion-col col-4>
+                <select placeholder="enteros" color="primary" class="number-list-select" name="" id="" [(ngModel)]="int">
+                    <option *ngFor="let integer of (integers$ | async)" [value]="integer" [selected]="int === integer">{{ integer }}</option>
+                </select>
+                <!-- <ion-select placeholder="enteros" [(ngModel)]="int">
+                    <ion-option *ngFor="let integer of (integers$ | async)" [value]="integer" [selected]="int === integer">{{ integer }}</ion-option>
+                </ion-select> -->
+            </ion-col>
+
+            <ion-col col-4>
+                <select  class="number-list-select" placeholder="decimales" *ngIf="decimales && decimales.length" [(ngModel)]="dec">
+                    <option *ngFor="let decimal of decimales;" [value]="decimal">{{ decimal }}</option>
+                </select>
+                <!-- <ion-select placeholder="decimales" *ngIf="decimales && decimales.length" [(ngModel)]="dec">
+                    <ion-option *ngFor="let decimal of decimales;" [value]="decimal">{{ decimal }}</ion-option>
+                </ion-select> -->
+            </ion-col>
+            <ion-col col-4 >
+                <h1 style="font-size:45px;">{{unit$ | async }}</h1>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <button class="button-space" color="secondary" ion-button icon-right full large (click)="localSave()">
+        <i class="fa fa-save"></i> &nbsp; SAVE
+    </button>
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+        <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+    </button>
+    <button class="button-space" color="light" ion-button icon-left full large (click)="reset()">
+        <i class="fa fa-circle-thin"></i>&nbsp; RESET
+    </button>
+
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content fxLayout="row" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center center">
+            <md-select placeholder="enteros" [(ngModel)]="int">
+                <md-option *ngFor="let integer of (integers$ | async);" [value]="integer">
+                    {{ integer }}
+                </md-option>
+            </md-select>
+            <md-select placeholder="decimales" *ngIf="decimales && decimales.length" [(ngModel)]="dec">
+                <md-option *ngFor="let decimal of decimales;" [value]="decimal">
+                    {{ decimal }}
+                </md-option>
+            </md-select>
+            <h2>{{unit$ | async }}</h2>
+        </md-card-content>
+        <md-card-actions *ngIf="editable" fxLayout="row" fxLayoutAlign="space-between center">
+            <button md-button color="warn" (click)="localReset()">RESET</button>
+            <div>
+                <button md-button color="primary" (click)="localSave()">GUARDAR</button>
+                <button md-button color="warn" (click)="cancel()">CANCELAR</button>
+            </div>
+        </md-card-actions>
+
+    </md-card> -->
+</ng-template>

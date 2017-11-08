@@ -1,0 +1,19 @@
+<ion-card class="example-card" *ngIf="info">
+    <ion-card-header>
+        <div md-card-avatar>
+            <div>search</div>
+        </div>
+        <ion-card-title>Registro</ion-card-title>
+        <div>Planta en el campo</div>
+    </ion-card-header>
+    <ion-card-content fxLayout="column" fxLayoutGap="15px" fxLayoutWrap fxLayoutAlign="center center">
+        <!-- <qr-code style="padding:100px;" [value]="info.record._id" [size]="100"></qr-code> -->
+        <h1>{{info.record | position}}</h1>
+        <!-- <small>PlantID: {{info.record._id}}</small>
+        <small>culpa de: {{info.record | userName | async}}</small> -->
+    </ion-card-content>
+    <!-- <md-card-actions fxLayout="row" fxLayoutAlign="space-between center">
+        <div></div>
+        <button md-button color="primary" (click)="search()">BUSCAR</button>
+    </md-card-actions> -->
+</ion-card>

@@ -1,0 +1,43 @@
+<div #viewEntry></div>
+
+<ng-template #assessTmpl>
+  <!-- <attribute-block [attrSchm]="attributeAssess$ | async" viewMode="cardEditView" [editable]="true" (output)="output($event)"></attribute-block> -->
+  <h1>ASSESSMENT TEMPLATE</h1>
+</ng-template>
+
+<ng-template #viewTmpl>
+  <h1>VERRR</h1>
+  <!-- <button md-button (click)="cancel()"><md-icon>arrow_back</md-icon> go back</button>
+  <div attribute-block *ngFor="let attrSchm of attrSchms$ | async" [attrSchm]="attrSchm" viewMode="cardView" [editable]="false"
+    (output)="output($event)"></div> -->
+</ng-template>
+
+<ng-template #editTmpl>
+  <!-- <md-tab-group [(selectedIndex)]="selectedIndex"> -->
+  <!-- <md-tab label="ATRIBUTOS"> -->
+
+  <div>
+    <div attribute-block *ngFor="let attrSchm of attrSchms$ | async" [attrSchm]="attrSchm" (output)="output($event)" viewMode="cardView"
+      [editable]="true"></div>
+  </div>
+
+  <!-- </md-tab> -->
+  <!-- <md-tab label="EVALUACIÓN" [disabled]="!(editing$ | async)">
+      <div #entry></div>
+    </md-tab>
+    <md-tab label="GUARDAR">
+      <md-card class="example-card">
+        <md-card-header>
+          <div md-card-avatar>
+            <md-icon>save</md-icon>
+          </div>
+          <md-card-title>GUARDAR CAMBIOS</md-card-title>
+        </md-card-header>
+        <md-card-actions fxLayout="row" fxLayoutAlign="space-between center">
+          <button md-button color="warn" (click)="cancel()">CANCELAR</button>
+          <button md-button color="primary" (click)="save()">GUARDAR</button>
+        </md-card-actions>
+      </md-card>
+    </md-tab> -->
+  <!-- </md-tab-group> -->
+</ng-template>

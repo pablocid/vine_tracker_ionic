@@ -1,0 +1,20 @@
+<!--
+  Generated template for the AssessAttrPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>{{attrName$ | async}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div *ngIf="editing$ | async ">
+    <attribute-block [attrSchm]="attributeAssess$ | async" viewMode="cardEditView" [editable]="true" (output)="output($event)"></attribute-block>
+  </div>
+</ion-content>

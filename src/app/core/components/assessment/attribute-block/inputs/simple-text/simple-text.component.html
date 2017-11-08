@@ -1,0 +1,44 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+    <h1>simple text</h1>
+
+</ng-template>
+
+<ng-template #cardViewTmpl>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
+                <ion-icon name="create" *ngIf="!(existValue$ | async)"></ion-icon>
+                {{ shortName$ | async | uppercase}}
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <markdown [data]="localValue?localValue:''"></markdown>
+            <button ion-button full large (click)="assess()">
+                <i class="fa fa-edit"></i>&nbsp;
+                <span *ngIf="!(existValue$ | async)">EVALUAR</span>
+                <span *ngIf="existValue$ | async">EDITAR</span>
+            </button>
+        </ion-card-content>
+    </ion-card>
+
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <h4>
+        <markdown [data]="localValue?localValue:''"></markdown>
+    </h4>
+    <textarea class="simple-text-textarea" [(ngModel)]="localValue"></textarea>
+
+    <button class="button-space" color="secondary" ion-button icon-right full large (click)="localSave()">
+        <i class="fa fa-save"></i> &nbsp; SAVE
+    </button>
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+        <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+    </button>
+    <button class="button-space" color="light" ion-button icon-left full large (click)="reset()">
+        <i class="fa fa-circle-thin"></i>&nbsp; RESET
+    </button>
+</ng-template>

@@ -1,0 +1,65 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+
+    <!-- <md-nav-list>
+        <md-list-item>
+            <md-icon md-list-icon color="accent">{{avatar}}</md-icon>
+            <h4 md-line>{{shortName | uppercase}}</h4>
+            <p md-line> {{name}} </p>
+            <md-icon *ngIf="existValue">check_circle</md-icon>
+        </md-list-item>
+    </md-nav-list> -->
+</ng-template>
+
+<ng-template #cardViewTmpl>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
+                <ion-icon name="create" *ngIf="!(existValue$ | async)"></ion-icon>
+                {{ shortName$ | async | uppercase}}
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid style="padding:10px;">
+                <ion-row>
+                    <ion-col *ngFor="let img of images$ | async">
+                        <ion-icon style="zoom:4.0;" name="image" *ngIf="img" (click)="showPicture(img)"></ion-icon>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+
+            <button ion-button full large (click)="assess()">
+                <i class="fa fa-edit"></i>&nbsp;
+                <span *ngIf="!(existValue$ | async)">EVALUAR</span>
+                <span *ngIf="existValue$ | async">EDITAR</span>
+            </button>
+        </ion-card-content>
+    </ion-card>
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <ion-list *ngIf="(editableImages$ | async) as images">
+        <ion-item *ngFor="let img of images; let index = index">
+            <ion-icon name="image" item-start color="primary" *ngIf="img" (click)="showImage(img)"></ion-icon>
+            <ion-icon name="add-circle" item-end color="primary" *ngIf="!img" (click)="addImage(fileInput, index)"></ion-icon>
+            <button large ion-button icon-left (click)="upload()" [disabled]="!(currentImgPath$ | async)" *ngIf="(currentIndex$ | async) === index ">
+                <ion-icon name="cloud-upload"></ion-icon>
+                Upload
+            </button>
+            <ion-icon name="trash" item-end color="primary" *ngIf="img" (click)="deleteImage(index)"></ion-icon>
+        </ion-item>
+    </ion-list>
+
+    <button class="button-space" color="secondary" ion-button icon-right full large (click)="save()">
+        <i class="fa fa-save"></i> &nbsp; SAVE
+    </button>
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+        <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+    </button>
+    <button class="button-space" color="light" ion-button icon-left full large (click)="reset()">
+        <i class="fa fa-circle-thin"></i>&nbsp; RESET
+    </button>
+
+</ng-template>

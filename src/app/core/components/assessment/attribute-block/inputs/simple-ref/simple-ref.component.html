@@ -1,0 +1,83 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+    <h1>Planta</h1>
+    <!-- <md-nav-list>
+        <md-list-item>
+            <md-icon md-list-icon>{{avatar}}</md-icon>
+            <h4 md-line>{{ shortName$ | async | uppercase}}</h4>
+            <p md-line> {{name$ | async}} </p>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-list-item>
+    </md-nav-list> -->
+</ng-template>
+
+<ng-template #cardViewTmpl>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>{{ shortName$ | async}}</ion-card-title>
+            <p>{{name$ | async}}</p>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-grid>
+                <ion-row>
+                    <ion-col col-auto>
+                        <qr-code [value]="value" [size]="100"></qr-code>
+                    </ion-col>
+                    <ion-col>
+                        ID: {{value$ | async}}
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card-content>
+    </ion-card>
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content *ngIf="(value$ | async) as value" fxLayout="column" fxLayoutGap="15px" fxLayoutWrap fxLayoutAlign="center center">
+            <qr-code [value]="value" [size]="80"></qr-code>
+            <div>{{value}}</div>
+        </md-card-content>
+        <md-card-actions *ngIf="editable" fxLayoutAlign="end start" fxLayout="row" fxLayoutGap="50px">
+            <button md-button color="primary" (click)="assess()">EVALUAR</button>
+        </md-card-actions>
+    </md-card> -->
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <h1>simple ref </h1>
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content fxLayout="column" fxLayoutGap="15px" fxLayoutWrap fxLayoutAlign="center center">
+            <qr-code [value]="localValue" [size]="200"></qr-code>
+            <md-form-field>
+                <input mdInput type="text" [(ngModel)]="localValue" (ngModelChange)="onchange($event)" placeholder="identificador único">
+            </md-form-field>
+            <h3 *ngIf="invalidReference$ | async"> El código del registro es inválido</h3>
+        </md-card-content>
+        <md-card-actions *ngIf="editable" fxLayout="row" fxLayoutAlign="space-between center">
+            <button md-button color="warn" (click)="reset()">RESET</button>
+            <div>
+                <button md-button color="primary" (click)="localSave()" [disabled]="invalidReference$ | async">GUARDAR</button>
+                <button md-button color="warn" (click)="cancel()">CANCELAR</button>
+            </div>
+        </md-card-actions>
+
+    </md-card> -->
+</ng-template>

@@ -1,0 +1,1 @@
+export { AssessmentListComponent } from './assessment-list.component';

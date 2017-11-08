@@ -1,0 +1,122 @@
+<span #entry></span>
+
+<ng-template #listViewTmpl>
+
+    <!-- <md-nav-list>
+        <md-list-item>
+            <md-icon md-list-icon>{{avatar}}</md-icon>
+            <h4 md-line>{{shortName$ | async | uppercase}}</h4>
+            <p md-line> {{name$ | async}} </p>
+            <md-icon *ngIf="existValue">check_circle</md-icon>
+        </md-list-item>
+    </md-nav-list> -->
+</ng-template>
+
+<ng-template #cardViewTmpl>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-title>
+                <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
+                <ion-icon name="create" *ngIf="!(existValue$ | async)"></ion-icon>
+                {{ shortName$ | async | uppercase}}
+            </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-list *ngIf="(selectedOptions$ | async)?.length">
+                <ion-item *ngFor="let option of selectedOptions$ | async">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    {{option | uppercase}}
+
+                </ion-item>
+            </ion-list>
+
+            <button ion-button full large (click)="assess()">
+                <i class="fa fa-edit"></i>&nbsp;
+                <span *ngIf="!(existValue$ | async)">EVALUAR</span>
+                <span *ngIf="existValue$ | async">EDITAR</span>
+            </button>
+        </ion-card-content>
+    </ion-card>
+    <!-- <md-card class="attr-card">
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{ shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+            <md-icon color="primary" *ngIf="existValue$ | async">check_circle</md-icon>
+            <md-icon color="warn" *ngIf="!(existValue$ | async)">not_interested</md-icon>
+        </md-card-header>
+        <md-card-content fxLayout="row" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center center">
+            <md-chip-list class="mat-chip-list-stacked" *ngIf="(selectedOptions$ | async)?.length">
+                <md-chip selected="true" style="font-size:18px; padding:20px " color="primary" *ngFor="let option of selectedOptions$ | async">{{option | uppercase}}</md-chip>
+            </md-chip-list>
+        </md-card-content>
+
+        <md-card-actions *ngIf="editable" fxLayoutAlign="end start" fxLayout="row" fxLayoutGap="50px">
+            <button md-button color="primary" (click)="assess()">EVALUAR</button>
+        </md-card-actions>
+    </md-card> -->
+</ng-template>
+
+<ng-template #cardEditViewTmpl>
+    <ion-item *ngFor="let option of optionList$| async">
+        <ion-label> {{option.string | uppercase}}</ion-label>
+        <ion-toggle (ionChange)="onChangeToggle(option)" [checked]="option.isChecked"></ion-toggle>
+    </ion-item>
+    <button class="button-space" color="secundary" ion-button icon-right full large (click)="save()">
+        <i class="fa fa-save"></i> &nbsp; SAVE
+    </button>
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+        <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+    </button>
+    <!-- <button class="button-space" ion-button icon-left full large (click)="reset()">
+        <i class="fa fa-circle-thin"></i>&nbsp; RESET
+    </button> -->
+    <!-- <ion-grid>
+        <ion-row>
+            <ion-col>
+                <button ion-button icon-left (click)="reset()">
+                    <i class="fa fa-circle-thin"></i>&nbsp; RESET
+                </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-right (click)="cancel()">
+                    <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
+                </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-right (click)="save()">
+                    <i class="fa fa-save"></i> &nbsp; SAVE
+                </button>
+            </ion-col>
+        </ion-row>
+    </ion-grid> -->
+    <!-- <md-card class="attr-card">
+
+        <md-card-header>
+            <div md-card-avatar>
+                <md-icon>{{avatar}}</md-icon>
+            </div>
+            <md-card-title>{{shortName$ | async | uppercase}}</md-card-title>
+            <md-card-subtitle>{{name$ | async}}</md-card-subtitle>
+        </md-card-header>
+
+        <md-card-content fxLayout="column" fxLayoutGap="50px" fxLayoutWrap fxLayoutAlign="center start">
+
+            <md-slide-toggle labelPosition="after" color="primary" *ngFor="let option of optionList$| async" [checked]="option.isChecked"
+                (change)="onChangeToggle(option)">
+                <h4>{{option.string | uppercase}}</h4>
+            </md-slide-toggle>
+        </md-card-content>
+
+        <md-card-actions *ngIf="editable" style="margin-top:70px;" fxLayout="row" fxLayoutAlign="space-between center">
+            <button md-button color="warn" (click)="reset()">RESET</button>
+            <div>
+                <button md-button color="primary" (click)="save()">GUARDAR</button>
+                <button md-button color="warn" (click)="cancel()">CANCELAR</button>
+            </div>
+        </md-card-actions>
+
+    </md-card> -->
+</ng-template>
