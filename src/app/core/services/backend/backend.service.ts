@@ -80,6 +80,14 @@ export class BackendService {
         return this._docsFromServer(`${this._urlRecords}/${id}`, null);
     }
 
+    public async findOneRecordByIdStream(id: any) {
+        const query = [
+            { $match: { _id: { $oid: id } } }
+        ]
+        const response = await this.findAggregateRecords(query);
+        return response[0];
+    }
+
     public findAggregateRecords(query: any[]): Promise<any[]> {
         return this._docsFromServer(this._urlRecordsAggregate, { query: JSON.stringify(query) })
     }
@@ -201,7 +209,7 @@ export class BackendService {
             // Use the FileTransfer to upload the image
             this.transfer.create().upload(path, this._urlUploads, options).then(data => {
                 console.log('UPLOADEDDDDD');
-                
+
                 resolve(true);
             }, err => {
                 console.log(err)

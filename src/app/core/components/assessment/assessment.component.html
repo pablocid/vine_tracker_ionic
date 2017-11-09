@@ -6,10 +6,8 @@
 </ng-template>
 
 <ng-template #viewTmpl>
-  <h1>VERRR</h1>
-  <!-- <button md-button (click)="cancel()"><md-icon>arrow_back</md-icon> go back</button>
-  <div attribute-block *ngFor="let attrSchm of attrSchms$ | async" [attrSchm]="attrSchm" viewMode="cardView" [editable]="false"
-    (output)="output($event)"></div> -->
+    <div attribute-block *ngFor="let attrSchm of attrSchms$ | async" [attrSchm]="attrSchm" (output)="output($event)" viewMode="cardView"
+    [editable]="false"></div>
 </ng-template>
 
 <ng-template #editTmpl>

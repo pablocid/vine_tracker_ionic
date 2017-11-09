@@ -31,8 +31,7 @@ export class QuickStartService {
     constructor(
         private _store: Store<AppStates>,
     ) {
-        this._store.select(s => s.quickStart.entities).subscribe(search => {
-        })
+
     }
 
     updatePosition(espaldera: number, hilera: number, posicion: number) {

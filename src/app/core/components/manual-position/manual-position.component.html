@@ -1,25 +1,33 @@
 <ion-card>
   <ion-card-header>
-    <h2>BÚSQUEDA MANUAL</h2>
-    <small>Localiza una planta a través su posición: Espaldera, Hilera y Posición</small>
+      <ion-card-title>
+        BÚSQUEDA MANUAL
+      </ion-card-title>
+    <p>Localiza una planta a través su posición</p>
   </ion-card-header>
   <!-- <img md-card-image src="http://www.psdicons.net/wp-content/uploads/2013/09/folder-search-psd-png.jpg" width="200px" > -->
   <ion-card-content>
     <ion-list>
       <ion-item>
-        <ion-label>Ubicación por Espaldera, Hilera y Posición</ion-label>
-        <ion-select [(ngModel)]="espaldera" (change)="onPositionChange()">
+        <ion-label>Espaldera</ion-label>
+        <ion-select class="btn-batch-list" [(ngModel)]="espaldera" (ionChange)="onPositionChange()">
           <ion-option *ngFor="let esp of espalderas" [value]="esp">{{esp}}</ion-option>
         </ion-select>
-        <ion-select [(ngModel)]="hilera" (change)="onPositionChange()">
+      </ion-item>
+      <ion-item>
+        <ion-label>Hilera</ion-label>
+        <ion-select class="btn-batch-list" [(ngModel)]="hilera" (ionChange)="onPositionChange()">
           <ion-option *ngFor="let hil of hileras" [value]="hil">{{hil}}</ion-option>
         </ion-select>
-        <ion-select [(ngModel)]="posicion" (change)="onPositionChange()">
+      </ion-item>
+      <ion-item>
+        <ion-label>Posición</ion-label>
+        <ion-select class="btn-batch-list" [(ngModel)]="posicion" (ionChange)="onPositionChange()">
           <ion-option *ngFor="let pos of posiciones" [value]="pos">{{pos}}</ion-option>
         </ion-select>
       </ion-item>
     </ion-list>
-    <button ion-button full (click)="search()">BUSCAR</button>
+    <button ion-button full large (click)="search()">BUSCAR</button>
   </ion-card-content>
-  
+
 </ion-card>

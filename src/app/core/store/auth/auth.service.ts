@@ -40,6 +40,10 @@ export class AuthService {
   }
 
   redirectToLoginPage(){
-    this._app.getActiveNav().setRoot('HomePage');
+    this._app.getActiveNav().setRoot('LoginPage');
+  }
+
+  checkLogin(){
+    return this._backend.currentUser();
   }
 }

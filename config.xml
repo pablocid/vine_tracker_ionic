@@ -91,4 +91,5 @@
     <plugin name="cordova-plugin-filepath" spec="^1.1.0" />
     <allow-navigation href="http://192.168.1.173:8100" />
     <allow-navigation href="http://192.168.8.106:8100" />
+    <allow-navigation href="http://192.168.1.173:8101" />
 </widget>

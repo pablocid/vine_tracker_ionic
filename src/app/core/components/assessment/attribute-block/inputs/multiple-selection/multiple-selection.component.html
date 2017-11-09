@@ -13,7 +13,7 @@
 </ng-template>
 
 <ng-template #cardViewTmpl>
-    <ion-card>
+    <ion-card *ngIf="showCardView$ | async">
         <ion-card-header>
             <ion-card-title>
                 <ion-icon name="checkbox" *ngIf="existValue$ | async"></ion-icon>
@@ -30,7 +30,7 @@
                 </ion-item>
             </ion-list>
 
-            <button ion-button full large (click)="assess()">
+            <button ion-button full large (click)="assess()" *ngIf="editable">
                 <i class="fa fa-edit"></i>&nbsp;
                 <span *ngIf="!(existValue$ | async)">EVALUAR</span>
                 <span *ngIf="existValue$ | async">EDITAR</span>

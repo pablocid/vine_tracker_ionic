@@ -14,22 +14,23 @@ export class AssessmentQueryService {
     private _ldb: LocalDbStoreService,
   ) { }
 
-  get(payload): Observable<{ record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean }> {
+  get(payload): Observable<{ record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean, reference?: IRecord }> {
 
     return Observable.fromPromise(this.getRecordInfo(payload));
   }
 
-  async getRecordInfo({ referenceId, assessmentId }): Promise<{ record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean }> {
+
+  async getRecordInfo({ referenceId, assessmentId }): Promise<{ record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean, reference?: IRecord }> {
     let allow = true;
 
     const record = await this._bs.findOneRecordBySearch({
       schm: assessmentId,
       filter: [{ key: '57c42f77c8307cd5b82f4486', value: referenceId, datatype: 'reference' }]
     });
-
+    const reference = await this._bs.findOneRecordByIdStream(referenceId);
     const schema = <ISchemaEmbedded>await this._ldb.getSchemaEmbedded(assessmentId);
     allow = await this.setAllow(schema, referenceId);
-    return { record, schema, referenceId, allow };
+    return { record, schema, referenceId, allow, reference };
   }
 
   async setAllow(schema, referenceId) {

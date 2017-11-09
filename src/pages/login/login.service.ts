@@ -22,4 +22,11 @@ export class LoginService {
     loading() {
         return this._store.select(state => state.auth.loading);
     }
+
+    checkLogin() {
+        this._store.dispatch(new AuthActions.CheckLoginAction());
+    }
+    logOut() {
+        this._store.dispatch(new AuthActions.LogOUTAction());
+    }
 }

@@ -10,11 +10,16 @@ export class AssessmentPageService {
     public saveSatus$ = this._store.select(s => s.assessmentQuery.saveStatus);
     public saving$ = this._store.select(s => s.assessmentQuery.saving);
     public allow$ = this._store.select(s => s.assessmentQuery.result.allow);
+    public recordInfo$ = this._store.select(state => state.assessmentQuery.result);
     constructor(
         private _store: Store<AppStates>
     ) { }
 
     getResult() {
+        this._store.select(state => state.assessmentQuery.result).subscribe(x => {
+            console.log(x);
+
+        })
         return this._store.select(state => state.assessmentQuery.result)
     }
 

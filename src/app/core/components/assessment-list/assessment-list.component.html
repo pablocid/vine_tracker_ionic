@@ -1,16 +1,18 @@
 <ion-card *ngIf="batch">
     <ion-card-header>
-        <div>EVALUACIONES DISPONIBLES</div>
-        <!-- <md-card-subtitle>Localiza una planta a través su posición: Espaldera, Hilera y Posición</md-card-subtitle> -->
+        <ion-card-title>
+            EVALUACIONES DISPONIBLES
+        </ion-card-title>
     </ion-card-header>
-    <!-- <img md-card-image src="http://www.psdicons.net/wp-content/uploads/2013/09/folder-search-psd-png.jpg" width="200px" > -->
+    <img src="assets/imgs/evaluaciones_1.jpg">
     <ion-card-content>
         <ion-list>
             <ion-item *ngFor="let assessment of assessments">
-                <h4 md-line>{{assessment | schmAttr:'listViewLabel'}}</h4>
-                <button (click)="btnAction('single',assessment._id)">PLANTA</button>
-                <button (click)="btnAction('batch',{assessmentId: assessment._id, batchId:batch._id})">HILERA</button>
-                <button (click)="btnAction('query',assessment._id)">CONSULTA</button>
+                <h1>{{assessment | schmAttr:'listViewLabel' | uppercase }}</h1>
+                <button color="secondary" class="button-space" ion-button full  large (click)="btnAction('single',assessment._id)">planta</button>
+                <button color="primary" class="button-space" ion-button full large (click)="btnAction('batch',{assessmentId: assessment._id, batchId:batch._id})">hilera</button>
+                <button color="light" class="button-space" ion-button full large (click)="btnAction('query',assessment._id)">consulta</button>
+              
             </ion-item>
         </ion-list>
     </ion-card-content>

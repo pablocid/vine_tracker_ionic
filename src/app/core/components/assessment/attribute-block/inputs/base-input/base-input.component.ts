@@ -51,7 +51,7 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     private _localRenderer: Function;
     public currentIndexImg: number;
     public currentIndex$: Observable<number>;
-
+    public showCardView$:Observable<boolean>;
     private unUploading: Subscription;
 
     constructor(
@@ -68,6 +68,7 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     ) { }
     ngOnInit() {
     }
+
     ngAfterContentInit() {
         this._config();
         this.config();
@@ -264,6 +265,12 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
             if (this.localValue === undefined || this.localValue === null) { return false; }
             return true;
         });
+        this.showCardView$ = this.existValue$
+        .map(existValue => {
+            if (this.editable) { return true; }
+            if (existValue) { return true; }
+            return false;
+        })
     }
     public config() { }
 

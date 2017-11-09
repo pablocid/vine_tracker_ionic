@@ -3,12 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { QuickStartService } from './quick-start.service';
 import { IRecordInfo } from '../../app/core/classes'
 import { Subscription } from 'rxjs/Subscription';
-/**
- * Generated class for the QuickStartPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LoadingController, Loading } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -28,13 +23,16 @@ export class QuickStartPage {
   public hilera: number;
   public hilera$ = this._service.hilera$;
   public unHilera: Subscription;
-
+  public loader: Loading;
+  private _unLoading: Subscription;
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _service: QuickStartService
+    private _service: QuickStartService,
+    public loadingCtrl: LoadingController
 
   ) {
+    this.loader = this.loadingCtrl.create({ content: 'cargando ...' })
   }
 
   ionViewDidLoad() {
@@ -46,10 +44,15 @@ export class QuickStartPage {
     });
     this.unHilera = this.hilera$.subscribe(hilera => {
       this.hilera = hilera;
+    });
+    this._unLoading = this.loading$.subscribe(x => {
+      if (x) { this.loader.present() }
+      else { this.loader.dismissAll() }
     })
   }
   ngOnDestroy() {
-    this.unInfo.unsubscribe();
+    if (this.unInfo) { this.unInfo.unsubscribe(); }
+    if (this._unLoading) { this._unLoading.unsubscribe() }
   }
 
   search(current) {
@@ -73,7 +76,11 @@ export class QuickStartPage {
   }
 
   goQuery(assessmentId) {
-    this.navCtrl.push(`assessment/${this.rInfo.record._id}/${assessmentId}`, { queryParams: { redirect: 'quick-start', editable: false } });
+    this.navCtrl.push(`AssessmentPage`,
+      {
+        queryParams: { redirect: 'QuickStartPage', editable: false },
+        params: { idRef: this.rInfo.record._id, idAssessment: assessmentId }
+      })
   }
 
   loadBatch(data) {
@@ -88,7 +95,7 @@ export class QuickStartPage {
         break;
       case 'batch':
         this.loadBatch(action.data);
-        this.navCtrl.push(`sub-batch-elements`, { queryParams: { redirect: 'quick-start' } })
+        this.navCtrl.push(`BatchPage`, { queryParams: { redirect: 'quick-start' } })
         break;
       case 'query':
         this.goQuery(action.data);

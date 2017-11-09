@@ -22,9 +22,17 @@ export class AuthEffects {
       .map(res => new auth.LoginSuccessAction(res))
       .catch((x) => Observable.of(new auth.LoginFailAction(x)))
     );
+
   @Effect() toLogin$ = this.actions$
     .ofType(auth.SESSION_EXPIRED)
     .map(x => new auth.LoginFailAction('La sesión ha expirado'))
     .map(x => this.authService.redirectToLoginPage())
     .map(x => new auth.RedirectToLoginAction())
+
+    @Effect() checkLogin$ = this.actions$
+    .ofType(auth.CHECK_LOGIN)
+    .switchMap(x => this.authService.checkLogin()
+      .map(res => new auth.CheckLoginSuccessAction(res))
+      .catch((x) => Observable.of(new auth.CheckLoginFailAction(x)))
+    )
 }

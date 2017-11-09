@@ -6,9 +6,11 @@ import { Subject } from 'rxjs/Subject';
 import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
 import { AssessmentPageService } from './assessment.service';
-import { LoadingController } from 'ionic-angular';
+import { LoadingController, Loading } from 'ionic-angular';
 import { find } from 'lodash';
 import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+
 /**
 * Generated class for the AssessmentPage page.
 *
@@ -23,7 +25,7 @@ import 'rxjs/add/operator/filter';
   providers: [AssessmentPageService]
 })
 export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
-  public recordInfo$ = this._service.getResult();
+  public recordInfo$ = this._service.recordInfo$;
   public loading$: Observable<boolean> = this._service.loading$;
   public allow$: Observable<boolean> = this._service.allow$;
   public editable: boolean = true;
@@ -36,6 +38,7 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
   public unSaveStatus: Subscription;
   public unSaving: Subscription;
   public record$ = this.recordInfo$.map(x => x.record);
+  public reference$ = this._service.recordInfo$.map(x => x.reference);
   public inActions$ = new Subject();
   public assessmentName$ = this.recordInfo$.filter(x => !!x.schema).map(x => {
     try {
@@ -48,7 +51,7 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _service: AssessmentPageService,
+    public _service: AssessmentPageService,
     public loadingCtrl: LoadingController
   ) {
   }
@@ -58,17 +61,16 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
   }
   ngOnInit() {
     // this._service.resolveParams({ idRef: '57a8d8deef449613775243a8', idAssessment: "580c05b412e1240010cd9d62" });
+    // this.editable = true;
 
     const params = this.navParams.get('params');
-    if(params && params.idRef && params.idAssessment){
+    if (params && params.idRef && params.idAssessment) {
       this._service.resolveParams(this.navParams.get('params'));
-    }else{
+    } else {
       alert('No existen datos para crear la evaluación')
     }
 
-    //this.editable = this.navParams.get('queryParams')['editable'];
-    this.editable = true;
-
+    this.editable = this.navParams.get('queryParams')['editable'];
   }
   ngAfterContentInit() {
     const loader = this.loadingCtrl.create({
@@ -103,6 +105,8 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
     this.unSaving = this._service.saving$.subscribe(x => {
       if (x) { saver.present(); } else { saver.dismiss(); }
     })
+
+
   }
   ngOnDestroy() {
     if (this.unSaved) {

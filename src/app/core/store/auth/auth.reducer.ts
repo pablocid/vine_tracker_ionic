@@ -38,11 +38,22 @@ export function AuthReducer(state = initialState, action: auth.Actions): AuthSta
 
     case auth.REDIRECT_TO_LOGIN: {
 
-      return { ...state }
+      return state;
+    }
+
+    case auth.LOGOUT: {
+      removeToken();
+      return state;
     }
 
     default: {
       return state;
     }
   }
+}
+
+function removeToken() {
+  console.log('erasing the token');
+  
+  localStorage.setItem('token', '');
 }

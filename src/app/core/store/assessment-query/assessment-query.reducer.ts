@@ -7,7 +7,7 @@ export interface AssessmentQueryState {
   saveStatus: boolean;
   saved: boolean;
   entities: { [id: string]: any };
-  result: { record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean };
+  result: { record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean, reference?: IRecord };
 }
 
 export const initialState: AssessmentQueryState = {
@@ -16,7 +16,7 @@ export const initialState: AssessmentQueryState = {
   saveStatus: undefined,
   saved: false,
   entities: {},
-  result: { record: undefined, schema: undefined, referenceId: undefined, allow: false }
+  result: { record: undefined, schema: undefined, referenceId: undefined, allow: false, reference: undefined }
 }
 
 export function AssessmentQueryReducer(state = initialState, action: assessmentQuery.Actions): AssessmentQueryState {
@@ -50,7 +50,7 @@ export function AssessmentQueryReducer(state = initialState, action: assessmentQ
         saving: true
       }
     }
-     
+
 
     case assessmentQuery.SAVE_SUCCESS: {
       return {

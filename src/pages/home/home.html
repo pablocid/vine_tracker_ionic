@@ -1,21 +1,32 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>HOME</ion-title>
+    <!--  -->
+    <ion-buttons end>
+        <button ion-button icon-only (click)="presentActionSheet()">
+          <ion-icon name="more"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>HOME PAGEEE</h2>
-  <button (tap)="goTo()"> go To about pages</button>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Evaluaciones
+      </ion-card-title>
+    </ion-card-header>
+    <img src="assets/imgs/consulta_2.jpg" alt="" (click)="goTo('QuickStartPage')">
+  </ion-card>
 
-  <h3>Loading: {{loading$ | async }}</h3>
-  <h4>Response : {{response$ | async | json}}</h4>
-  <h1><button (click)="login()">LOGIN</button></h1>
-  <p>
-    This starter project comes with simple tabs-based layout for apps that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the
-    <code>src/pages/</code> directory to add or change tabs, update any existing page or create new pages.
-  </p>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        Sincronizador
+      </ion-card-title>
+    </ion-card-header>
+    <img src="assets/imgs/sync_2.jpg" alt="" (click)="goTo('SyncPage')">
+  </ion-card>
+
 </ion-content>

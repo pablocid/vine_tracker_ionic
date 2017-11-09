@@ -48,6 +48,7 @@ export class AttributeBlockComponent implements OnInit, AfterContentInit, OnDest
     if (!this.attrSchm) { return; }
     const input = this._getListComponentFactoryById(this.attrSchm.Input._id);
 
+    
     if (!input) { return; }
     this.component = this.entry.createComponent(input);
     this.component.instance.schemaId = this.attrSchm._id;

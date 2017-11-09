@@ -19,7 +19,7 @@ export class LoadAction implements Action {
 export class LoadSuccessAction implements Action {
   readonly type = LOAD_SUCCESS;
 
-  constructor(public payload: { record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean }) { }
+  constructor(public payload: { record: IRecord, schema: ISchemaEmbedded, referenceId: string, allow: boolean, rerference?:IRecord }) { }
 }
 
 export class LoadFailAction implements Action {
