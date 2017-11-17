@@ -16,9 +16,10 @@ export interface AssessmentState {
   uploading: boolean;
   uploadStatus: boolean;
   img: {
-    path: any,
+    path?: any,
     name: string,
     index: number;
+    formData?:FormData
   }
   //result: string[];
 }
@@ -122,6 +123,7 @@ export function AssessmentReducer(state = initialState, action: assessment.Actio
     case assessment.UPLOAD_IMG: {
       return {
         ...state,
+        img: action.payload,
         uploading: true,
         uploadStatus: false
       }
@@ -157,9 +159,23 @@ export function AssessmentReducer(state = initialState, action: assessment.Actio
 }
 
 function updateImageListAfterUploadedImg(state: AssessmentState): IRecord {
+  console.log('stae in update image list after upladed img', state);
+  
   const attrId = state.editing.id;
   const index = state.entities.record.attributes.map(x => x.id).indexOf(attrId);
+  if(index === -1){
+    console.log('Attributo de imagenes no existe, creando ...');
+    const list = [];
+    list[state.img.index] = state.img.name;
+    state.entities.record.attributes.push({id:attrId, list})
+    return cloneDeep(state.entities.record);
+  }
+  if(!Array.isArray(state.entities.record.attributes[index].list)){
+    state.entities.record.attributes[index].list = [];
+  }
   state.entities.record.attributes[index].list[state.img.index] = state.img.name;
+  console.log('state.entities.record.attributes[index]', state.entities.record.attributes[index]);
+  
   return cloneDeep(state.entities.record);
 }
 

@@ -7,6 +7,9 @@ import { UUID } from 'angular2-uuid';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import 'rxjs/add/operator/map';
 
+import { cloneDeep } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
+import { Loading } from 'ionic-angular';
 @Component({
     selector: 'selection-list',
     templateUrl: './picture-list.component.html'
@@ -18,8 +21,8 @@ export class PictureListComponent extends BaseInputComponent {
     public numOfPics$: Observable<number>;
     public isLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     public picUrl: Observable<string>;
-
-    @ViewChild('fileInput') fileInput: ElementRef;
+    public unUpload: Subscription;
+    public uploadInicator: Loading;
 
     public config() {
         this.datatype = 'list';
@@ -51,6 +54,17 @@ export class PictureListComponent extends BaseInputComponent {
             )
         );
 
+        this.unUpload = this.uploading$.subscribe(x => {
+            if (x) {
+                
+                this.uploadInicator = this.loadingCtrl.create({ content: 'subiendo imagen al servidor ...' });
+                this.uploadInicator.present();
+            } else {
+                if (this.uploadInicator) { this.uploadInicator.dismiss(); }
+                this.uploadInicator = undefined;
+            }
+        })
+
     }
 
     public deleteImage(index: number) {
@@ -59,9 +73,20 @@ export class PictureListComponent extends BaseInputComponent {
             this.update();
         }
     }
-    public addImage(input, index) {
-        this.currentIndexImg = index;
-        this.presentActionSheet();
+
+    public addImage(formData: FormData, index) {
+        // const fdata =  new FormData();
+        // fdata.append('file', fdata.get('file'))
+        // this.currentIndexImg = index;
+        console.log('file', formData.get('file')['name'], 'index', index);
+
+        this.upload({ name: formData.get('file')['name'], index, formData })
     }
+
+    destroy() {
+        if (this.unUpload) { this.unUpload.unsubscribe(); }
+    }
+
+
 
 }

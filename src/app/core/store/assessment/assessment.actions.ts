@@ -54,11 +54,12 @@ export class CancelEvaluation implements Action {
 
 export class TakePictureAction implements Action {
   readonly type = TAKE_PIC;
-  constructor(public payload: {path:string, name:string, index:number}) { }
+  constructor(public payload: {path:string, name:string, index:number, formData:FormData}) { }
 }
 
 export class UploadImgAction implements Action {
   readonly type = UPLOAD_IMG;
+  constructor(public payload: { name:string, index:number, formData:FormData}) { }
 }
 
 export class UploadImgSuccessAction implements Action {

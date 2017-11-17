@@ -10,6 +10,11 @@ export const LOAD_MANUAL_SUCCESS = '[Quick Start] Load manual Success';
 export const LOAD_MANUAL_FAIL = '[Quick Start] Load manual Fail';
 export const UPDATE_MANUAL_POSITION = '[Quick Start] Update manual position';
 
+export const LOAD_SCANNER = '[Quick Start] Load Scanner';
+export const LOAD_SCANNER_SUCCESS = '[Quick Start] Load Scanner Success';
+export const LOAD_SCANNER_FAIL = '[Quick Start] Load Scanner Fail';
+export const UPDATE_SCANNER_POSITION = '[Quick Start] Update Scanner position';
+
 export const LOAD_DISTINCT_SUB_BATCH_SUCCESS = '[Quick Start] Load distinct sub batch success';
 
 /**
@@ -53,6 +58,23 @@ export class UpdateManualPosition implements Action {
   constructor(public payload: { espaldera: number, hilera: number, posicion: number }) { }
 }
 
+export class LoadScannerAction implements Action {
+  readonly type = LOAD_SCANNER;
+  constructor(public payload: string) { }
+}
+
+export class LoadScannerSuccessAction implements Action {
+  readonly type = LOAD_SCANNER_SUCCESS;
+
+  constructor(public payload: IRecordInfo) { }
+}
+
+export class LoadScannerFailAction implements Action {
+  readonly type = LOAD_SCANNER_FAIL;
+
+  constructor(public payload: any) { }
+}
+
 export class LoadDistinctSubBatchSuccess implements Action {
   readonly type = LOAD_DISTINCT_SUB_BATCH_SUCCESS;
 
@@ -67,7 +89,10 @@ export type Actions =
   | LoadManualSuccessAction
   | LoadManualFailAction
   | UpdateManualPosition
-  | LoadDistinctSubBatchSuccess;
+  | LoadDistinctSubBatchSuccess
+  | LoadScannerAction
+  | LoadScannerSuccessAction
+  | LoadScannerFailAction;
 
 export const QuickStartActions = {
   LoadAction,
@@ -77,5 +102,8 @@ export const QuickStartActions = {
   LoadManualSuccessAction,
   LoadManualFailAction,
   UpdateManualPosition,
-  LoadDistinctSubBatchSuccess
+  LoadDistinctSubBatchSuccess,
+  LoadScannerAction,
+  LoadScannerSuccessAction,
+  LoadScannerFailAction,
 }

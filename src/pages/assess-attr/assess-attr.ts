@@ -57,7 +57,7 @@ export class AssessAttrPage {
     }
 
     if ($event.message === 'upload') {
-      this._service.uploadImage();
+      this._service.uploadImage($event.data);
     }
 
     if ($event.message === 'takePicture') {

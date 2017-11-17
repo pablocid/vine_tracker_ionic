@@ -5,3 +5,4 @@ export { NumberListComponent } from './number-list/number-list.component';
 export { MultipleSelectionComponent } from './multiple-selection/multiple-selection.component';
 export { PictureListComponent } from './picture-list/picture-list.component';
 export { ImageDialogComponent } from './image-dialog/image.modal';
+export { BaseInputComponent } from './base-input/base-input.component';

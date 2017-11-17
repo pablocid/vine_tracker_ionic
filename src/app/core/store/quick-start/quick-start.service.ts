@@ -28,4 +28,8 @@ export class QuickStartService {
     return this._rs.distinctSubBatchNumbers('sdf', 'sdf', 'sdf');
   }
 
+  public getRecordInfoByCode(code:string):Observable<IRecordInfo> {
+      return this._rs.getRecordInfoByCode(code);
+  }
+
 }

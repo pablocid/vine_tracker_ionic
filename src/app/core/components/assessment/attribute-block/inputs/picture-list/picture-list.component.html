@@ -22,6 +22,7 @@
             </ion-card-title>
         </ion-card-header>
         <ion-card-content>
+
             <ion-grid style="padding:10px;">
                 <ion-row>
                     <ion-col *ngFor="let img of images$ | async">
@@ -35,30 +36,33 @@
                 <span *ngIf="!(existValue$ | async)">EVALUAR</span>
                 <span *ngIf="existValue$ | async">EDITAR</span>
             </button>
+
         </ion-card-content>
     </ion-card>
 </ng-template>
 
 <ng-template #cardEditViewTmpl>
-    <ion-list *ngIf="(editableImages$ | async) as images">
-        <ion-item *ngFor="let img of images; let index = index">
-            <ion-icon name="image" item-start color="primary" *ngIf="img" (click)="showImage(img)"></ion-icon>
-            <ion-icon name="add-circle" item-end color="primary" *ngIf="!img" (click)="addImage(fileInput, index)"></ion-icon>
-            <button large ion-button icon-left (click)="upload()" [disabled]="!(currentImgPath$ | async)" *ngIf="(currentIndex$ | async) === index ">
+    
+    <ion-list *ngIf="(editableImages$ | async) as images ">
+        <ion-item *ngFor="let img of images; let index= index ">
+            <ion-icon style="zoom:3.0; "  name="image" item-start color="primary" *ngIf="img" (click)="showImage(img)"></ion-icon>
+            <!-- <ion-icon style="zoom:3.0; "  name="add-circle" item-end color="primary" *ngIf="!img" (click)="addImage(fileInput, index)"></ion-icon> -->
+            <pic-taker *ngIf="!img" (form)="addImage($event, index)"></pic-taker>
+            <!-- <button large ion-button icon-left (click)="upload()" [disabled]="!(currentImgPath$ | async)" *ngIf="(currentIndex$ | async)===index">
                 <ion-icon name="cloud-upload"></ion-icon>
                 Upload
-            </button>
-            <ion-icon name="trash" item-end color="primary" *ngIf="img" (click)="deleteImage(index)"></ion-icon>
+            </button> -->
+            <!-- <ion-icon  style="zoom:3.0; " name="trash" item-end color="primary" *ngIf="img" (click)="deleteImage(index)"></ion-icon>  -->
         </ion-item>
     </ion-list>
 
-    <button class="button-space" color="secondary" ion-button icon-right full large (click)="save()">
+    <button class="button-space" color="secondary" ion-button icon-right full large (click)="save() ">
         <i class="fa fa-save"></i> &nbsp; SAVE
     </button>
-    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel()">
+    <button class="button-space" color="danger" ion-button icon-right full large (click)="cancel() ">
         <i class="fa fa-minus-circle"></i>&nbsp; CANCEL
     </button>
-    <button class="button-space" color="light" ion-button icon-left full large (click)="reset()">
+    <button class="button-space" color="light" ion-button icon-left full large (click)="reset() ">
         <i class="fa fa-circle-thin"></i>&nbsp; RESET
     </button>
 

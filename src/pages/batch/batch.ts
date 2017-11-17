@@ -33,6 +33,7 @@ export class BatchPage implements OnInit, OnDestroy {
   public tabs: string = 'no_evaluados';
   public espalderaLoading: Loading;
   public unLoading: Subscription;
+  public unViewDidEnter: Subscription;
   constructor(
     private _service: BatchPageService,
     public navCtrl: NavController,
@@ -49,7 +50,15 @@ export class BatchPage implements OnInit, OnDestroy {
       console.log('this._service.batchAssessment$.subscribe', x);
 
     })
-    this._service.updateSelectedAssess();
+    //this._service.updateSelectedAssess();
+
+    this.unViewDidEnter = this.navCtrl.viewDidEnter.map(x=>x.id).subscribe(x=>{
+      console.log('viewDidEnter in batch componnent aaaaa', x);
+      if(x === 'BatchPage'){
+        this._service.updateSelectedAssess();
+      }
+      
+    })
 
     this.unLoading = this.loading$.subscribe(x => {
       if (x) {
@@ -84,6 +93,9 @@ export class BatchPage implements OnInit, OnDestroy {
     if (this.unLoading) {
       this.unLoading.unsubscribe();
     }
+    if(this.unViewDidEnter){
+      console.log('unsubscribe to this.unViewDidEnter');
+      this.unViewDidEnter.unsubscribe();
+    }
   }
-
 }

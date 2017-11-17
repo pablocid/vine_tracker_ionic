@@ -91,6 +91,38 @@ export class RecordService {
             )
     }
 
+    public getRecordInfoByCode(code: string): Observable<IRecordInfo> {
+        if (!/^[0-9a-f]{24}$/i.test(code)) {
+            const search = {
+                schm: '57a4e02ec830e2bdff1a1608',
+                filter: [
+                    { key: '57c3583bc8307cd5b82f447d', value: code, datatype: 'string' }
+                ]
+            }
+
+            return this._bs
+                .findOneRecordBySearchObservable(search)
+                .switchMap(record =>
+                    Observable
+                        .fromPromise(this._ldb.getSchemaEmbedded(record.schm))
+                        .map(schema => {
+                            return { record, schema };
+                        })
+                )
+        }else{
+            return this._bs
+            .findOneRecordByIdObserable(code)
+            .switchMap(record =>
+                Observable
+                    .fromPromise(this._ldb.getSchemaEmbedded(record.schm))
+                    .map(schema => {
+                        return { record, schema };
+                    })
+            )
+        }
+
+    }
+
     public distinctSubBatchNumbers(streamQuery: string, typeId: string, dd: string) {
         streamQuery = "schm=57a4e02ec830e2bdff1a1608&filter=[{\"key\":\"5807af5f31f55d0010aaffe4\",\"value\":5,\"datatype\":\"number\"}]";
         typeId = '5807af9231f55d0010aaffe5';

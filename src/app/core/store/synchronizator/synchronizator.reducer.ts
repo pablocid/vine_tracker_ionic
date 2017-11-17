@@ -16,6 +16,7 @@ export interface SyncState {
     synchronizing: boolean;
     syncStatus: boolean;
   };
+  checkSchmBatch: boolean;
 }
 
 export const initialState: SyncState = {
@@ -33,7 +34,8 @@ export const initialState: SyncState = {
     isUpdated: true,
     synchronizing: false,
     syncStatus: true
-  }
+  },
+  checkSchmBatch: false,
 }
 
 export function SyncReducer(state = initialState, action: synchronizator.Actions): SyncState {
@@ -78,7 +80,7 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
         schema: {
           ...state.schema,
           checking: false,
-          isUpdated:action.payload
+          isUpdated: action.payload
         }
       };
     }
@@ -111,7 +113,7 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
         schema: {
           ...state.schema,
           synchronizing: false,
-          isUpdated:action.payload,
+          isUpdated: action.payload,
           syncStatus: action.payload
         }
       };
@@ -140,13 +142,12 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
     }
 
     case synchronizator.CHECK_BATCH_SUCCESS: {
-
       return {
         ...state,
         batch: {
           ...state.schema,
           checking: false,
-          isUpdated:action.payload,
+          isUpdated: action.payload,
         }
       };
     }
@@ -158,7 +159,7 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
         batch: {
           ...state.schema,
           checking: false,
-          isUpdated:false,
+          isUpdated: false,
         }
       };
     }
@@ -180,7 +181,7 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
         batch: {
           ...state.schema,
           synchronizing: false,
-          isUpdated:action.payload,
+          isUpdated: action.payload,
           syncStatus: action.payload
         }
       };
@@ -196,6 +197,35 @@ export function SyncReducer(state = initialState, action: synchronizator.Actions
           syncStatus: false
         }
       };
+    }
+
+    case synchronizator.CHECK_SCHM_AND_BATCH: {
+      return {
+        ...state,
+        checkSchmBatch: true
+      }
+    }
+
+    case synchronizator.CHECK_SCHM_AND_BATCH_SUCCESS: {
+      return {
+        ...state,
+        checkSchmBatch: false,
+        batch: {
+          ...state.batch,
+          isUpdated: action.payload.batch
+        },
+        schema: {
+          ...state.schema,
+          isUpdated: action.payload.schm
+        }
+      }
+    }
+
+    case synchronizator.CHECK_SCHM_AND_BATCH_FAIL: {
+      return {
+        ...state,
+        checkSchmBatch: false
+      }
     }
 
     default: {

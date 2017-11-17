@@ -49,4 +49,14 @@ export class SynchronizatorEffects {
       // If request fails, dispatch failed action
       .catch(() => Observable.of({ type: synchronizator.SYNC_BATCH_FAIL }))
     );
+
+  @Effect() checkSchmAndBatch$ = this.actions$
+    .ofType(synchronizator.CHECK_SCHM_AND_BATCH)
+    .switchMap(payload => this.synchronizatorService.checkSchmAndBatch()
+      // If successful, dispatch success action with result
+      .map(res => ({ type: synchronizator.CHECK_SCHM_AND_BATCH_SUCCESS, payload: res }))
+      // If request fails, dispatch failed action
+      .catch(() => Observable.of({ type: synchronizator.CHECK_SCHM_AND_BATCH_FAIL }))
+    );
+
 }

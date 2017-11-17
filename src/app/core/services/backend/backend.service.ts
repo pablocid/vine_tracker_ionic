@@ -80,6 +80,10 @@ export class BackendService {
         return this._docsFromServer(`${this._urlRecords}/${id}`, null);
     }
 
+    public findOneRecordByIdObserable(id: any) {
+        return this._docsFromServerObservable(`${this._urlRecords}/${id}`, null);
+    }
+
     public async findOneRecordByIdStream(id: any) {
         const query = [
             { $match: { _id: { $oid: id } } }

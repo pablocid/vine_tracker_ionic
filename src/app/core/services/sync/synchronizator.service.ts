@@ -54,7 +54,7 @@ export class SynService {
 
     }
 
-    public async compareSchmDates() {
+    public async compareSchmDates(): Promise<{ remoteDate: Date, localDate: Date, isEqual: boolean }> {
         const remoteDate = await this.getLastDateFromRemoteSchm();
         const localDate = await this.getLastDateFromLocalSchm();
 
@@ -63,7 +63,7 @@ export class SynService {
         return { remoteDate, localDate, isEqual }
     }
 
-    public async compareBatchDates() {
+    public async compareBatchDates(): Promise<{ remoteDate: Date, localDate: Date, isEqual: boolean }> {
         const remoteDate = await this.getLastDateFromRemoteBatchRecords();
         const localDate = await this.getLastDateFromLocalBatchRecords();
 

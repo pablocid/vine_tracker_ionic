@@ -18,7 +18,7 @@ export class AuthenticatedHttpService extends Http {
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-        //console.log('Http requeest intercepted');
+        console.log('Http requeest intercepted');
         //console.log('TOken', this._token);
 
         this._setHeader(url, options, this._token);

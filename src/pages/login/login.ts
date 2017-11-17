@@ -23,7 +23,7 @@ export class LoginPage implements OnInit, OnDestroy {
   private _ling: Loading;
   private _unLoading: Subscription;
   public email: string = "admin@agroinformatica.cl";
-  public password: string = "admin";
+  public password: string //= "admin";
 
   constructor(
     public navCtrl: NavController,

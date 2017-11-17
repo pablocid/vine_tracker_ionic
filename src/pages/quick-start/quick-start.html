@@ -12,12 +12,41 @@
   </ion-navbar>
 </ion-header>
 
-
 <ion-content>
+
+
+  <div padding>
+    <ion-segment [(ngModel)]="searchOption">
+      <ion-segment-button value="scan">
+        Scan
+      </ion-segment-button>
+      <ion-segment-button value="manual">
+        Posicion
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+
+  <div [ngSwitch]="searchOption">
+    <ion-list *ngSwitchCase="'scan'">
+      <ion-item>
+        <scanner (code)="searchScanner($event)"></scanner>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'manual'">
+      <ion-item>
+        <div class="card-box">
+          <manual-position [current-position]="currentPosition$ | async" (new-position)="onPositionChange($event)" (search-position)="search($event)">
+          </manual-position>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
+  <!-- 
   <div class="card-box">
     <manual-position [current-position]="currentPosition$ | async" (new-position)="onPositionChange($event)" (search-position)="search($event)">
     </manual-position>
-  </div>
+  </div> -->
 
   <div class="card-box">
     <record-info *ngIf="!(loading$ | async)" [info]="info$ | async"></record-info>
@@ -27,4 +56,29 @@
     <assessment-list *ngIf="!(loading$ | async)" [batch]="batch$ | async" [assessments]="assessments$ | async" [record-info]="info$ | async"
       (action)="asessmentListAction($event)"></assessment-list>
   </div>
+
+
+
+
+  <!--   
+
+  <video autoplay #vid></video>
+  <button ion-button full large (click)="takePic()">PICTURE</button>
+  <button ion-button (click)="onGrabFrameButtonClick()"> onGrabFrameButtonClick()</button>
+  <button ion-button (click)="onTakePhotoButtonClick()">onTakePhotoButtonClick()</button>
+  <h1>frame canvas</h1>
+  <canvas #can></canvas>
+  <h1>Foto canvas</h1>
+  <canvas #fotoCanv></canvas>
+  <img #imagen /> -->
+
+  <!-- debug flag for console.log spam              (default: false) -->
+  <!-- canvas width                                 (default: 640) -->
+  <!-- canvas height                                (default: 480) -->
+  <!-- should the image be a mirror?                (default: false) -->
+  <!-- should the scanner stop after first success? (default: true) -->
+  <!-- miliseconds between new capture              (default: 500) -->
+
+  <!-- <h1>respuesta{{respuesta}}</h1> -->
+
 </ion-content>

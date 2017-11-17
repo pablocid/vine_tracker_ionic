@@ -1,0 +1,32 @@
+<!--
+  Generated template for the ModalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary"r>
+    <ion-title>{{ (title? title : 'IMAGEN') | uppercase}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="closeModal()">Close</button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <img [src]="url">
+<!-- <ion-card>
+    <ion-card-header>
+        <ion-card-title>
+            {{title | uppercase}}
+        </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+        <img [src]="url">
+    </ion-card-content>
+  
+  </ion-card> -->
+</ion-content>

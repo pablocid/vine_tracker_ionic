@@ -19,6 +19,10 @@ export const CHECK_BATCH_FAIL = '[Synchronizator] Check Batches Fail';
 export const SYNC_BATCH = '[Synchronizator] Sync Batches';
 export const SYNC_BATCH_SUCCESS = '[Synchronizator] Sync Batches Success';
 export const SYNC_BATCH_FAIL = '[Synchronizator] Sync Batches Fail';
+
+export const CHECK_SCHM_AND_BATCH = '[Synchronizator] Check Schemas and Batches';
+export const CHECK_SCHM_AND_BATCH_SUCCESS = '[Synchronizator] Check Schemas and Batches Success';
+export const CHECK_SCHM_AND_BATCH_FAIL = '[Synchronizator] Check Schemas and Batches Fail';
 /**
  * Load Synchronizator Actions
  */
@@ -102,6 +106,22 @@ export class SyncBatchFailAction implements Action {
   constructor(public payload: any) { }
 }
 
+export class CheckSchmAndBatchAction implements Action {
+  readonly type = CHECK_SCHM_AND_BATCH;
+  constructor() { }
+}
+
+export class CheckSchmAndBatchSuccessAction implements Action {
+  readonly type = CHECK_SCHM_AND_BATCH_SUCCESS;
+
+  constructor( public payload: {schm:boolean, batch:boolean}) { }
+}
+
+export class CheckSchmAndBatchFailAction implements Action {
+  readonly type = CHECK_SCHM_AND_BATCH_FAIL;
+
+  constructor( public payload: any) { }
+}
 export type Actions =
   | LoadAction
   | LoadSuccessAction
@@ -117,7 +137,10 @@ export type Actions =
   | CheckBatchesFailAction
   | SyncBatchAction
   | SyncBatchSuccessAction
-  | SyncBatchFailAction;
+  | SyncBatchFailAction
+  | CheckSchmAndBatchAction
+  | CheckSchmAndBatchSuccessAction
+  | CheckSchmAndBatchFailAction;
 
 export const SyncActions = {
   LoadAction,
@@ -134,5 +157,8 @@ export const SyncActions = {
   SyncBatchFailAction,
   CheckBatchesAction,
   CheckBatchesSuccessAction,
-  CheckBatchesFailAction
+  CheckBatchesFailAction,
+  CheckSchmAndBatchAction,
+  CheckSchmAndBatchSuccessAction,
+  CheckSchmAndBatchFailAction
 }

@@ -101,7 +101,7 @@ export class AssessmentComponent implements OnDestroy {
       case 'cancel': this._whenCancel(); break;
       case 'assess': this._whenAssess(data); break;
       case 'update': this._whenUpdate(data); break;
-      // case 'upload': this._whenUpload(data); break;
+      case 'upload': this._whenUpload(data); break;
     }
   }
   private _whenSave() {
@@ -122,9 +122,10 @@ export class AssessmentComponent implements OnDestroy {
 
     this._store.dispatch(new AssessmentActions.UpdateValue(data));
   }
-  // private _whenUpload(formData: FormData) {
-  //   this._store.dispatch(new UploadActions.LoadAction(formData));
-  // }
+  private _whenUpload(formData) {
+    console.log('upload asssessment component', formData.formData.get('file')['name']);
+    this._store.dispatch(new AssessmentActions.UploadImgAction(formData));
+  }
 
   @Output('action') action = new EventEmitter<{ message: string, data?: any }>();
   public save() {

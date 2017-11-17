@@ -9,10 +9,8 @@ export class AssessmentService {
     private _bs: BackendService,
   ) { }
 
-  uploadImage(info) {
-    console.log('InStore assesment upload inmage info', info);
-    
-    return Observable.fromPromise(this._bs.uploadImage(info.path, info.name));
+  uploadImage(formData:FormData) {
+    return this._bs.upload(formData);
   }
 
 

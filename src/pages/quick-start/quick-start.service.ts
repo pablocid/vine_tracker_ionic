@@ -11,14 +11,15 @@ export class QuickStartService {
     public manualPosition$ = this._store.select(s => s.quickStart.entities.manualSearch);
     public recordInfo$ = this._store.select(s => s.quickStart.entities.refInfo);
     public batch$ = this._store.select(s => s.quickStart.entities.batch);
+    public status$ = this._store.select(s => s.quickStart.status);
     public assessments$ = this._store
         .select(s => s.quickStart.entities.assessments)
         .map(x => {
-            
-            return x.filter( (element, index, array) =>{
-                try{
-                    return find(element.attributes, {id:'editable'})['boolean'];
-                }catch(e){
+
+            return x.filter((element, index, array) => {
+                try {
+                    return find(element.attributes, { id: 'editable' })['boolean'];
+                } catch (e) {
                     return false;
                 }
             })
@@ -44,6 +45,10 @@ export class QuickStartService {
 
     loadBatch(assessmentId: string, batchId: string, subBatchFilter: string) {
         this._store.dispatch(new BatchAssessmentActions.LoadAction({ assessmentId, batchId, subBatchFilter }))
+    }
+
+    searchScanner(code: string) {
+        this._store.dispatch(new QuickStartActions.LoadScannerAction(code));
     }
 
 }

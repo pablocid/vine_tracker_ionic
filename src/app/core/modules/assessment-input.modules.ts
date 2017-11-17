@@ -9,12 +9,16 @@ import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { Camera } from '@ionic-native/camera';
 import { File as FileNative } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
-import { FilePath } from '@ionic-native/file-path'
+import { FilePath } from '@ionic-native/file-path';
+import { PicTakerComponent } from '../components/pic-taker/pic-taker.component';
+
+import { Ng2ImgMaxModule } from 'ng2-img-max';
 const IMPORTS = [
     CommonModule,
     IonicModule,
     MarkdownModule.forRoot(),
-    QRCodeModule
+    QRCodeModule,
+    Ng2ImgMaxModule
 ];
 
 import {
@@ -23,25 +27,29 @@ import {
     SelectionListComponent,
     NumberListComponent,
     MultipleSelectionComponent,
-    PictureListComponent, ImageDialogComponent
+    PictureListComponent, 
+    ImageDialogComponent,
+    BaseInputComponent
 } from '../components/assessment/attribute-block/inputs';
 const INPUTS_COMPONENTS = [
+    ImageDialogComponent,
     SimpleTextComponent,
     SimpleRefComponent,
     SelectionListComponent,
     NumberListComponent,
     MultipleSelectionComponent,
     PictureListComponent,
-    ImageDialogComponent,
+    BaseInputComponent
 ];
 
 const COMPONENTS = [
     AssessmentComponent,
     AttributeBlockComponent,
+    PicTakerComponent
 ];
 @NgModule({
     imports:[
-        ...IMPORTS
+        ...IMPORTS,
     ],
     exports: [
         ...COMPONENTS

@@ -14,9 +14,9 @@ export class SynchronizatorService {
   ) { }
 
   checkSchm() {
-    return Observable.fromPromise(this._syncs.compareSchmDates().then(x=>{
+    return Observable.fromPromise(this._syncs.compareSchmDates().then(x => {
       console.log('checkSchm', x);
-      
+
       return x;
     })).map(x => x.isEqual);
   }
@@ -25,17 +25,21 @@ export class SynchronizatorService {
     return Observable.fromPromise(this._syncs.syncSchemas());
   }
 
+  checkSchmAndBatch(): Observable<{ schm: boolean, batch: boolean }> {
+    return this.checkSchm()
+      .switchMap(schm => this.checkBatch()
+        .map(batch => {
+          return { schm, batch };
+        }))
+  }
+
   checkBatch() {
-    return Observable.fromPromise(this._syncs.compareBatchDates().then(x=>{
-      console.log('checkBatch', x);
-      
-      return x;
-    })).map(x => x.isEqual);
+    return Observable.fromPromise(this._syncs.compareBatchDates()).map(x => x.isEqual);
   }
 
   syncBatch() {
     //console.log('synchkirngsdklfd batch');
-    
+
     //return Observable.fromPromise(this._syncs.syncBatchRecords());
     return Observable.fromPromise(this.syncUserAndBatch());
   }

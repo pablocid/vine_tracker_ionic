@@ -10,13 +10,16 @@ import { UUID } from 'angular2-uuid';
 import { File as FileNative } from '@ionic-native/file';
 import { Transfer, TransferObject, FileUploadOptions, FileUploadResult } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
-import { NavController, ActionSheetController, ToastController, Platform, LoadingController, Loading } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ActionSheetController, ToastController, Platform, LoadingController, Loading, ModalController } from 'ionic-angular';
+//import {ImageDialogComponent} from '../image-dialog/image.modal';
+
 import 'rxjs/add/operator/map';
 declare var cordova: any;
 
 @Component({
     selector: 'base-input',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    template: ''
 })
 
 export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
@@ -43,7 +46,7 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     public existValue$: Observable<boolean>;
     public uploadPicture$: Observable<{ loading: boolean, entities: { [id: string]: any }, result: any, error: boolean }>;
     public uploading$: Observable<boolean>;
-    public imgInfo$: Observable<{ path: string, name: string, index: number }>;
+    public imgInfo$: Observable<{ path?: string, name: string, index: number, formData?:FormData }>;
     public currentImgPath$: Observable<string>;
     public uploadStatus$: Observable<boolean>;
     public successfullyUploaded$: Observable<boolean>;
@@ -51,7 +54,7 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     private _localRenderer: Function;
     public currentIndexImg: number;
     public currentIndex$: Observable<number>;
-    public showCardView$:Observable<boolean>;
+    public showCardView$: Observable<boolean>;
     private unUploading: Subscription;
 
     constructor(
@@ -64,7 +67,8 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
         public actionSheetCtrl: ActionSheetController,
         public toastCtrl: ToastController,
         public platform: Platform,
-        public loadingCtrl: LoadingController
+        public loadingCtrl: LoadingController,
+        public modalCtrl: ModalController
     ) { }
     ngOnInit() {
     }
@@ -85,73 +89,73 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     }
 
     public presentActionSheet() {
-        let actionSheet = this.actionSheetCtrl.create({
-            title: 'Select Image Source',
-            buttons: [
-                {
-                    text: 'Load from Library',
-                    handler: () => {
-                        this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
-                    }
-                },
-                {
-                    text: 'Use Camera',
-                    handler: () => {
-                        this.takePicture(this.camera.PictureSourceType.CAMERA);
-                    }
-                },
-                {
-                    text: 'Cancel',
-                    role: 'cancel'
-                }
-            ]
-        });
-        actionSheet.present();
+        // let actionSheet = this.actionSheetCtrl.create({
+        //     title: 'Select Image Source',
+        //     buttons: [
+        //         {
+        //             text: 'Load from Library',
+        //             handler: () => {
+        //                 this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+        //             }
+        //         },
+        //         {
+        //             text: 'Use Camera',
+        //             handler: () => {
+        //                 this.takePicture(this.camera.PictureSourceType.CAMERA);
+        //             }
+        //         },
+        //         {
+        //             text: 'Cancel',
+        //             role: 'cancel'
+        //         }
+        //     ]
+        // });
+        // actionSheet.present();
     }
 
-    public takePicture(sourceType) {
-        if (this.unUploading) { this.unUploading.unsubscribe(); }
+    // public takePicture(sourceType) {
+    //     if (this.unUploading) { this.unUploading.unsubscribe(); }
 
-        this.loading = this.loadingCtrl.create({
-            content: 'subiendo foto ...',
-        });
+    //     this.loading = this.loadingCtrl.create({
+    //         content: 'subiendo foto ...',
+    //     });
 
-        this.unUploading = this.uploading$.subscribe(x => {
-            if (x) {
-                this.loading.present();
-            }
-            else { this.loading.dismissAll(); }
-        })
-        // Create options for the Camera Dialog
-        var options = {
-            quality: 50,
-            sourceType: sourceType,
-            saveToPhotoAlbum: false,
-            correctOrientation: true
-        };
-        const name = this.createFileName();
-        // Get the data of an image
-        this.camera.getPicture(options).then((imagePath) => {
-            // Special handling for Android library
-            if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-                this.filePath.resolveNativePath(imagePath)
-                    .then(filePath => {
-                        let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                        let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                        this.copyFileToLocalDir(correctPath, currentName, name);
-                        this.takePic({ path: this.pathForImage(name), name, index: this.currentIndexImg });
+    //     this.unUploading = this.uploading$.subscribe(x => {
+    //         if (x) {
+    //             this.loading.present();
+    //         }
+    //         else { this.loading.dismissAll(); }
+    //     })
+    //     // Create options for the Camera Dialog
+    //     var options = {
+    //         quality: 50,
+    //         sourceType: sourceType,
+    //         saveToPhotoAlbum: false,
+    //         correctOrientation: true
+    //     };
+    //     const name = this.createFileName();
+    //     // Get the data of an image
+    //     this.camera.getPicture(options).then((imagePath) => {
+    //         // Special handling for Android library
+    //         if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
+    //             this.filePath.resolveNativePath(imagePath)
+    //                 .then(filePath => {
+    //                     let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
+    //                     let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
+    //                     this.copyFileToLocalDir(correctPath, currentName, name);
+    //                     this.takePic({ path: this.pathForImage(name), name, index: this.currentIndexImg });
 
-                    });
-            } else {
-                var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-                var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-                this.copyFileToLocalDir(correctPath, currentName, name);
-                this.takePic({ path: this.pathForImage(name), name, index: this.currentIndexImg });
-            }
-        }, (err) => {
-            this.presentToast('Error while selecting image.');
-        });
-    }
+    //                 });
+    //         } else {
+    //             var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+    //             var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+    //             this.copyFileToLocalDir(correctPath, currentName, name);
+    //             this.takePic({ path: this.pathForImage(name), name, index: this.currentIndexImg });
+    //         }
+    //     }, (err) => {
+    //         this.presentToast('Error while selecting image.');
+    //     });
+    // }
     // Create a new name for the image
     private createFileName() {
         const newName = UUID.UUID();
@@ -186,50 +190,54 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
         }
     }
 
-    public uploadImage() {
-        // Destination URL
-        var url = "https://pmg-restful-dev.herokuapp.com/api/uploads";
+    // public uploadImage() {
+    //     // Destination URL
+    //     var url = "https://pmg-restful-dev.herokuapp.com/api/uploads";
 
-        // File for Upload
-        var targetPath = this.pathForImage(this.lastImage);
+    //     // File for Upload
+    //     var targetPath = this.pathForImage(this.lastImage);
 
-        // File name only
-        var filename = this.lastImage;
+    //     // File name only
+    //     var filename = this.lastImage;
 
-        var options: FileUploadOptions = {
-            fileKey: "file",
-            fileName: filename,
-            chunkedMode: false,
-            mimeType: "multipart/form-data",
-            params: { 'fileName': filename },
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        };
+    //     var options: FileUploadOptions = {
+    //         fileKey: "file",
+    //         fileName: filename,
+    //         chunkedMode: false,
+    //         mimeType: "multipart/form-data",
+    //         params: { 'fileName': filename },
+    //         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+    //     };
 
-        const fileTransfer: TransferObject = this.transfer.create();
+    //     const fileTransfer: TransferObject = this.transfer.create();
 
-        this.loading = this.loadingCtrl.create({
-            content: 'Uploading...',
-        });
-        this.loading.present();
+    //     this.loading = this.loadingCtrl.create({
+    //         content: 'Uploading...',
+    //     });
+    //     this.loading.present();
 
-        // Use the FileTransfer to upload the image
-        fileTransfer.upload(targetPath, url, options).then(data => {
-            this.loading.dismissAll()
-            this.presentToast('Image succesful uploaded.');
-        }, err => {
-            console.log(err)
-            console.log(JSON.stringify(err));
-            this.loading.dismissAll()
-            this.presentToast('Error while uploading file.');
-        });
-    }
+    //     // Use the FileTransfer to upload the image
+    //     fileTransfer.upload(targetPath, url, options).then(data => {
+    //         this.loading.dismissAll()
+    //         this.presentToast('Image succesful uploaded.');
+    //     }, err => {
+    //         console.log(err)
+    //         console.log(JSON.stringify(err));
+    //         this.loading.dismissAll()
+    //         this.presentToast('Error while uploading file.');
+    //     });
+    // }
 
     private _picFullName(name, ext) {
         return `${name}.${ext}`;
     }
 
-    public showPicture(url) {
-        this.photoViewer.show(url)
+    public showPicture(url, title?:string) {
+        //this.photoViewer.show(url)
+        console.log('showPicture');
+
+        let profileModal = this.modalCtrl.create('ModalPage', { url, title });
+        profileModal.present();
     }
 
     //templates
@@ -266,11 +274,11 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
             return true;
         });
         this.showCardView$ = this.existValue$
-        .map(existValue => {
-            if (this.editable) { return true; }
-            if (existValue) { return true; }
-            return false;
-        })
+            .map(existValue => {
+                if (this.editable) { return true; }
+                if (existValue) { return true; }
+                return false;
+            })
     }
     public config() { }
 
@@ -313,11 +321,13 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
         this.output.emit({ message: 'update', data: { id: this.schemaId, [this.datatype]: this.localValue } });
     }
 
-    public upload(formData: { path: string, name: string }) {
-        this.output.emit({ message: 'upload' })
+    public upload(data: { path?: string, name: string, index:number, formData:FormData }) {
+        console.log('file name base input', data.formData.get('file')['name']);
+        
+        this.output.emit({ message: 'upload', data });
     }
 
-    public takePic(data: { path: string, name: string, index: number }) {
+    public takePic(data: { path: string, name: string, index: number, formData:FormData }) {
         console.log('takepic in base-input');
 
         this.output.emit({ message: 'takePicture', data });
@@ -344,9 +354,8 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
     }
 
     public showImage(src, title) {
-        console.log('Image show');
-        this.photoViewer.show(src, title)
-        //this.dialog.open(ImageDialogComponent, { data: { src, title } })
+        let profileModal = this.modalCtrl.create('ModalPage', { url:src, title });
+        profileModal.present();
     }
 
     public reset() {
@@ -355,3 +364,4 @@ export class BaseInputComponent implements AfterContentInit, OnInit, OnDestroy {
         this.update();
     }
 }
+

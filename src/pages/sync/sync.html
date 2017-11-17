@@ -5,40 +5,88 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>Sync</ion-title>
-  </ion-navbar>
-
+    <ion-navbar color="primary">
+      <ion-title>Sincronizador</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="checkSchmAndBatch()">
+            <ion-icon name="sync"></ion-icon>
+          </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
-
 <ion-content>
+
+  <ion-card>
+    <ion-card-header>
+        <ion-card-title>
+            <ion-icon name="cloud-done" *ngIf="isSchmUpdated$ | async"></ion-icon>
+            <ion-icon name="cloud-download" *ngIf="!(isSchmUpdated$ | async)"></ion-icon>
+            SCHEMAS
+        </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <h3>Checking schm {{checking_schm$ | async }}</h3>
+      <h3>Los esquemas estan actualizados ? : {{isSchmUpdated$ | async }}</h3>
+      <h3>schmSynchronizing$ ... {{schmSynchronizing$ | async }}</h3>
+      <h3>syncStatus$ ... {{syncStatus$ | async }}</h3>
+
+      <div class="card-box">
+        <button ion-button full large (click)="syncSchemas()" *ngIf="!(isSchmUpdated$ | async)">ACTUALIZAR</button>
+        <!-- <button ion-button full large (click)="checkSchm()">CHECK SCHM INFO</button> -->
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+      <ion-card-header>
+          <ion-card-title>
+              <ion-icon name="cloud-done" *ngIf="isBatchUpdated$ | async"></ion-icon>
+              <ion-icon name="cloud-download" *ngIf="!(isBatchUpdated$ | async)"></ion-icon>
+              ESPALDERAS
+          </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+    
+        <h3>Checking batch {{checkingBatch$ | async }}</h3>
+        <h3>Los batches estan actualizados ? : {{isBatchUpdated$ | async }}</h3>
+        <h3>batchSynchronizing$ ... {{batchSynchronizing$ | async }}</h3>
+        <h3>syncBatchStatus$ ... {{syncBatchStatus$ | async }}</h3>
   
-  <h3>Checking schm {{checking_schm$ | async }}</h3>
-  <h3>Los esquemas estan actualizados ? : {{isSchmUpdated$ | async }}</h3>
-  <h3>schmSynchronizing$ ... {{schmSynchronizing$ | async }}</h3>
-  <h3>syncStatus$ ... {{syncStatus$ | async }}</h3>
-  
-  
-  <h3>Checking batch {{checkingBatch$ | async }}</h3>
-  <h3>Los batches estan actualizados ? : {{isBatchUpdated$ | async }}</h3>
-  <h3>batchSynchronizing$ ... {{batchSynchronizing$ | async }}</h3>
-  <h3>syncBatchStatus$ ... {{syncBatchStatus$ | async }}</h3>
-  
-  
-  <button (click)="syncBatches()">SYNC BATCHES</button>
-  
-  <button (click)="syncSchemas()">SYNC SCHEMAS</button>
-  
-  <button (click)="checkSchm()">CHECK SCHM INFO</button>
-  
-  <button (click)="checkBatch()"> CHECK BATCH INFO</button>
-  
-  <button (click)="getUsers()">USERS INFO</button>
-  
-  <button (click)="syncUsers()">SYNC USERS</button>
-  
-  <button (click)="usersInfo()">USERS LOCAL INFO</button>
-  
+        <div class="card-box">
+          <button ion-button full large (click)="syncBatches()" *ngIf="!(isBatchUpdated$ | async)">ACTUALIZAR</button>
+          <!-- <button ion-button full large (click)="checkBatch()"> CHECK BATCH INFO</button> -->
+        </div>
+      </ion-card-content>
+    </ion-card>
+<!-- 
+    <ion-card>
+        <ion-card-header>
+          Usuarios
+        </ion-card-header>
+        <ion-card-content>
+          <h3>Checking schm {{checking_schm$ | async }}</h3>
+          <h3>Los esquemas estan actualizados ? : {{isSchmUpdated$ | async }}</h3>
+          <h3>schmSynchronizing$ ... {{schmSynchronizing$ | async }}</h3>
+          <h3>syncStatus$ ... {{syncStatus$ | async }}</h3>
+    
+    
+          <h3>Checking batch {{checkingBatch$ | async }}</h3>
+          <h3>Los batches estan actualizados ? : {{isBatchUpdated$ | async }}</h3>
+          <h3>batchSynchronizing$ ... {{batchSynchronizing$ | async }}</h3>
+          <h3>syncBatchStatus$ ... {{syncBatchStatus$ | async }}</h3>
+    
+    
+          <div class="card-box">
+            <button ion-button full large (click)="syncBatches()">SYNC BATCHES</button>
+            <button ion-button full large (click)="syncSchemas()">SYNC SCHEMAS</button>
+            <button ion-button full large (click)="checkSchm()">CHECK SCHM INFO</button>
+            <button ion-button full large (click)="checkBatch()"> CHECK BATCH INFO</button>
+            <button ion-button full large (click)="getUsers()">USERS INFO</button>
+            <button ion-button full large (click)="syncUsers()">SYNC USERS</button>
+            <button ion-button full large (click)="usersInfo()">USERS LOCAL INFO</button>
+          </div>
+        </ion-card-content>
+      </ion-card> -->
+
 </ion-content>

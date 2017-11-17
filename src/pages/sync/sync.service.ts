@@ -14,6 +14,7 @@ export class SynchronizerService {
     public batchSynchronizing$ = this._store.select(s => s.sync.batch.synchronizing);
     public syncBatchStatus$ = this._store.select(s => s.sync.batch.syncStatus);
 
+    public checkingSchmBatch$ = this._store.select(s => s.sync.checkSchmBatch);
 
     constructor(
         private _store: Store<AppStates>
@@ -27,12 +28,16 @@ export class SynchronizerService {
         this._store.dispatch(new SyncActions.SyncSchmAction());
     }
 
-    checkBatch(){
+    checkBatch() {
         this._store.dispatch(new SyncActions.CheckBatchesAction());
     }
 
     syncBatch() {
         this._store.dispatch(new SyncActions.SyncBatchAction());
+    }
+
+    checkSchmAndBatch() {
+        this._store.dispatch(new SyncActions.CheckSchmAndBatchAction());
     }
 
 }

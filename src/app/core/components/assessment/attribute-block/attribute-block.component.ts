@@ -48,7 +48,7 @@ export class AttributeBlockComponent implements OnInit, AfterContentInit, OnDest
     if (!this.attrSchm) { return; }
     const input = this._getListComponentFactoryById(this.attrSchm.Input._id);
 
-    
+
     if (!input) { return; }
     this.component = this.entry.createComponent(input);
     this.component.instance.schemaId = this.attrSchm._id;
@@ -77,7 +77,7 @@ export class AttributeBlockComponent implements OnInit, AfterContentInit, OnDest
         case 'cancel': this._whenCancel(); break;
         case 'assess': this._whenAssess(); break;
         case 'update': this._whenUpdate(); break;
-        case 'upload': this._whenUpload(); break;
+        case 'upload': this._whenUpload(data); break;
         case 'takePicture': this._whenTakePicture(data); break;
       }
     });
@@ -97,8 +97,10 @@ export class AttributeBlockComponent implements OnInit, AfterContentInit, OnDest
   private _whenUpdate() {
     this.output.emit({ message: 'update', data: { id: this.attrSchm._id, [this.component.instance.datatype]: this.component.instance.localValue } });
   }
-  private _whenUpload() {
-    this.output.emit({ message: 'upload' });
+  private _whenUpload(data) {
+    console.log('upload attr block', data.formData.get('file')['name']);
+    
+    this.output.emit({ message: 'upload', data });
   }
   private _whenTakePicture(data) {
     console.log('private _whenTakePicture(data)  in attribute-block');
@@ -122,8 +124,9 @@ export class AttributeBlockComponent implements OnInit, AfterContentInit, OnDest
       case '581a34e95c0eac001077ad6d':
         return this._resolver.resolveComponentFactory(PictureListComponent);
       default:
-        return this._resolver.resolveComponentFactory(SimpleTextComponent);
+      //return this._resolver.resolveComponentFactory(SimpleTextComponent);
     }
+
   }
 
 }

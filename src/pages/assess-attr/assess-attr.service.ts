@@ -36,8 +36,8 @@ export class AssessAttrService {
         this._store.dispatch(new AssessmentActions.CancelEvaluation());
     }
 
-    public uploadImage() {
-        this._store.dispatch(new AssessmentActions.UploadImgAction());
+    public uploadImage(data) {
+        this._store.dispatch(new AssessmentActions.UploadImgAction(data));
     }
 
     public takePicture(data) {

@@ -1,0 +1,14 @@
+<ion-card>
+    <ion-card-header>
+        <ion-card-title>
+            QR SCANNER
+        </ion-card-title>
+        <p>Localiza una planta escaneando el código QR</p>
+    </ion-card-header>
+    <ion-card-content text-center>
+            <qr-scanner #scanner (onRead)="decodedOutput($event)"></qr-scanner>
+        <button *ngIf="!(isScanning$ | async)" ion-button full large (click)="scan()">SCAN</button>
+        <button *ngIf="(isScanning$ | async)" ion-button full large (click)="stopScan()">STOP SCAN</button>
+    </ion-card-content>
+
+</ion-card>
