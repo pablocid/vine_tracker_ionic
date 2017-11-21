@@ -42,22 +42,21 @@
       <button class="btn-batch-list" ion-item *ngFor="let element of non_evaluated$ | async" (click)="evaluar(element.schemaId , element.reference._id)">
         <ion-icon name="create" item-start></ion-icon>
         {{element.reference | position}}
-        <!-- <button md-button (click)="evaluar(element.schemaId , element.reference._id)">EVALUAR</button> -->
       </button>
     </ion-list>
 
     <ion-list *ngSwitchCase="'evaluados'">
-      <button class="btn-batch-list" ion-item *ngFor="let element of evaluated$ | async" (click)="evaluar(element.schemaId , element.reference._id)">
+      <button class="btn-batch-list" ion-item *ngFor="let element of evaluated$ | async" (click)="evaluar(element.schemaId , element.reference._id)" [ngClass]="{'isWarnClass': element.isWarn}">
         <ion-icon name="radio-button-on" item-start></ion-icon>
         {{element.reference | position}}
-        <!-- <button md-button (click)="evaluar(element.schemaId , element.reference._id)">EVALUAR</button> -->
+        <div style="font-size:16px;">último que evaluó: {{element.record | userName | async}}</div>
+        <div style="font-size:12px;">fecha de evaluación: {{element.record | updateInfo}}</div>
       </button>
     </ion-list>
     <ion-list *ngSwitchCase="'restrict'">
-      <button class="btn-batch-list" ion-item *ngFor="let element of restricted$ | async" (click)="evaluar(element.schemaId , element.reference._id)">
+      <button class="btn-batch-list" ion-item *ngFor="let element of restricted$ | async">
         <ion-icon name="remove-circle" item-start></ion-icon>
         {{element.reference | position}}
-        <!-- <button md-button (click)="evaluar(element.schemaId , element.reference._id)">EVALUAR</button> -->
       </button>
     </ion-list>
   </div>

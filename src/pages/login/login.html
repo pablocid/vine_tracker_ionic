@@ -17,7 +17,7 @@
   <ion-list *ngIf="!(isLoggin$ | async)">
     <ion-item>
       <ion-label floating>Email</ion-label>
-      <ion-input type="text" [(ngModel)]="email"></ion-input>
+      <ion-input type="email" [(ngModel)]="email"></ion-input>
     </ion-item>
     <ion-item>
       <ion-label floating>Contraseña</ion-label>

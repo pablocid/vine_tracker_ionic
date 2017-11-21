@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
  * Ionic pages and navigation.
  */
 
+
 @IonicPage()
 @Component({
   selector: 'page-login',
@@ -22,7 +23,7 @@ export class LoginPage implements OnInit, OnDestroy {
   public isLoggin$ = this.response$.map(x => x.isLoggin);
   private _ling: Loading;
   private _unLoading: Subscription;
-  public email: string = "admin@agroinformatica.cl";
+  public email: string = localStorage.getItem('email');
   public password: string //= "admin";
 
   constructor(
@@ -51,6 +52,7 @@ export class LoginPage implements OnInit, OnDestroy {
 
   login() {
     //this._service.action({ email: "admin@agroinformatica.cl", password: "admin" })
+    localStorage.setItem('email', this.email);
     this._service.action({ email: this.email, password: this.password })
     this.password = '';
   }

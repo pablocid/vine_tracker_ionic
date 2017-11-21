@@ -30,7 +30,7 @@ export class LoadSuccessAction implements Action {
     schemaRef: ISchemaEmbedded,
     batch: IRecord,
     subBatchFilter: any,
-    data: { record: IRecord, reference: IRecord, restricted: boolean }[]
+    data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]
   }) { }
 }
 
@@ -53,12 +53,12 @@ export class UpdateAssessAction implements Action {
 export class UpdateAssessSuccessAction implements Action {
   readonly type = UPDATE_ASSESS_SUCCESS;
 
-  constructor(public payload: IRecord) { }
+  constructor(public payload: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]) { }
 }
 
 export class UpdateAssessFailAction implements Action {
   readonly type = UPDATE_ASSESS_FAIL;
-  
+
   constructor(public payload: any) { }
 }
 

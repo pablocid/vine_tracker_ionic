@@ -27,7 +27,7 @@ export const initialState: QuickStartState = {
   status: true,
   entities: {
     manualSearch: {
-      espaldera: 5,
+      espaldera: 7,
       hilera: 2,
       posicion: 2
     },

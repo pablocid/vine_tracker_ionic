@@ -14,7 +14,7 @@ export interface BatchAssessmentState {
     schemaRef: ISchemaEmbedded,
     batch: IRecord,
     subBatchFilter: any,
-    data: { record: IRecord, reference: IRecord, restricted: boolean }[]
+    data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]
   };
 }
 
@@ -38,7 +38,7 @@ export function BatchAssessmentReducer(state = initialState, action: batchAssess
   switch (action.type) {
     case batchAssessment.LOAD: {
       return {
-        ...state,
+        ...initialState,
         loading: true,
         entities: action.payload
       }
@@ -76,15 +76,10 @@ export function BatchAssessmentReducer(state = initialState, action: batchAssess
     }
 
     case batchAssessment.UPDATE_ASSESS_SUCCESS: {
-      let newData;
-      if (state.result && state.result.data && state.result.data.length && state.result.schema && state.result.schema._id) {
-        newData = updateSelectedRecord(state.result.data, action.payload, state.result.schema._id);
-      } else {
-        newData = state.result.data;
-      }
+
       state.result = {
         ...state.result,
-        data: newData
+        data: action.payload
       }
       return {
         ...state,

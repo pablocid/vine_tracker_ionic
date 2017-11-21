@@ -15,7 +15,7 @@
 <ion-content>
 
 
-  <div padding>
+  <div >
     <ion-segment [(ngModel)]="searchOption">
       <ion-segment-button value="scan">
         Scan
@@ -35,10 +35,8 @@
 
     <ion-list *ngSwitchCase="'manual'">
       <ion-item>
-        <div class="card-box">
           <manual-position [current-position]="currentPosition$ | async" (new-position)="onPositionChange($event)" (search-position)="search($event)">
           </manual-position>
-        </div>
       </ion-item>
     </ion-list>
   </div>

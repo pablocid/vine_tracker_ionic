@@ -34,6 +34,7 @@ export class BatchPage implements OnInit, OnDestroy {
   public espalderaLoading: Loading;
   public unLoading: Subscription;
   public unViewDidEnter: Subscription;
+  public _dbg = false;
   constructor(
     private _service: BatchPageService,
     public navCtrl: NavController,
@@ -46,14 +47,9 @@ export class BatchPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._service.batchAssessment$.subscribe(x => {
-      console.log('this._service.batchAssessment$.subscribe', x);
-
-    })
-    //this._service.updateSelectedAssess();
 
     this.unViewDidEnter = this.navCtrl.viewDidEnter.map(x=>x.id).subscribe(x=>{
-      console.log('viewDidEnter in batch componnent aaaaa', x);
+      if(this._dbg){console.log('viewDidEnter in batch componnent',x);}
       if(x === 'BatchPage'){
         this._service.updateSelectedAssess();
       }
@@ -94,7 +90,6 @@ export class BatchPage implements OnInit, OnDestroy {
       this.unLoading.unsubscribe();
     }
     if(this.unViewDidEnter){
-      console.log('unsubscribe to this.unViewDidEnter');
       this.unViewDidEnter.unsubscribe();
     }
   }

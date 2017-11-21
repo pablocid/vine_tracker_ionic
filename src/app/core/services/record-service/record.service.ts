@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BackendService, LocalDbStoreService } from '../index';
 import { IRecord, ISchemaEmbedded, IRecordInfo, ISchema } from '../../classes';
-import { find } from 'lodash';
+import { find, cloneDeep } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -44,10 +44,10 @@ export class RecordService {
             try {
                 for (let filter of filters) {
                     const exist = find(record.attributes, { id: filter.key, [filter.datatype]: filter.value })
-                    console.log(exist)
+                    if (this._dbg) { console.log('Exist', exist); }
                     if (!exist) { ok = false }
                 }
-            } catch (e) { console.log(e); continue; }
+            } catch (e) { if (this._dbg) { console.log('Error', e); } continue; }
             if (ok) {
                 b.push(batch);
             }
@@ -109,16 +109,16 @@ export class RecordService {
                             return { record, schema };
                         })
                 )
-        }else{
+        } else {
             return this._bs
-            .findOneRecordByIdObserable(code)
-            .switchMap(record =>
-                Observable
-                    .fromPromise(this._ldb.getSchemaEmbedded(record.schm))
-                    .map(schema => {
-                        return { record, schema };
-                    })
-            )
+                .findOneRecordByIdObserable(code)
+                .switchMap(record =>
+                    Observable
+                        .fromPromise(this._ldb.getSchemaEmbedded(record.schm))
+                        .map(schema => {
+                            return { record, schema };
+                        })
+                )
         }
 
     }
@@ -274,7 +274,7 @@ export class RecordService {
             schemaRef: ISchemaEmbedded,
             batch: IRecord,
             subBatchFilter: any,
-            data: { record: IRecord, reference: IRecord, restricted: boolean }[]
+            data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]
         }> {
         //console.log('Arguments', assessmentId, batchId, subBatchFilter);
         const batch = await this._ldb.getBatchById(batchId);
@@ -294,27 +294,32 @@ export class RecordService {
         const batchRefFilter = this._getAndParseFilterBatch(batch);
         const sbRefFilter = this._parseSubBatchFilterString(subBatchFilter) // format key/value/datatype[]
         if (!batchRefFilter.length || !sbRefFilter.length) {
-            console.log('Error en los filtros batch y/o subBatch');
-            console.log('Arguments', assessmentId, batchId, subBatchFilter);
-            console.log('batchRefFilter', batchRefFilter);
-            console.log('sbRefFilter', sbRefFilter);
-            console.log('batchRefSchm', batchRefSchmId);
-            console.log('batch', batch);
+            if (this._dbg) {
+                console.log('Error en los filtros batch y/o subBatch');
+                console.log('Arguments', assessmentId, batchId, subBatchFilter);
+                console.log('batchRefFilter', batchRefFilter);
+                console.log('sbRefFilter', sbRefFilter);
+                console.log('batchRefSchm', batchRefSchmId);
+                console.log('batch', batch);
+            }
 
             return;
         }
         const restriction = this._getAndParseRestrictionAttr(assessSchm);
-        console.log('restriction', restriction);
+
+        if (this._dbg) { console.log('restriction', restriction); }
 
         const fullRefFilter = [...batchRefFilter, ...sbRefFilter];
         const searchQueryReferences = { schm: batchRefSchmId, filter: fullRefFilter }
         const aggregateQueryRecords = this._makeAggregateQueryRecordsObject(assessmentId, fullRefFilter);
         const aggregateQueryRestrictions = this._makeAggregateQueryRestrictionObject(restriction.schm, restriction.filter, fullRefFilter);
 
-        console.log('fullRefFilter', fullRefFilter);
-        console.log('searchQueryReferences', searchQueryReferences);
-        console.log('aggregateQueryRecords', aggregateQueryRecords);
-        console.log('aggregateQueryRestrictions', aggregateQueryRestrictions);
+        if (this._dbg) {
+            console.log('fullRefFilter', fullRefFilter);
+            console.log('searchQueryReferences', searchQueryReferences);
+            console.log('aggregateQueryRecords', aggregateQueryRecords);
+            console.log('aggregateQueryRestrictions', JSON.stringify(aggregateQueryRestrictions));
+        }
 
         const requests = [
             //descargando registros de referencia (plantas)
@@ -324,19 +329,52 @@ export class RecordService {
         ]
         if (restriction.isRestricted) {
             //descargando registro sin restricción
+            if (this._dbg) { console.log('Have restrictions', ); }
             requests.push(this._bs.findAggregateRecords(aggregateQueryRestrictions))
+        } else {
+            if (this._dbg) { console.log('Dont have restrictions', ); }
         }
 
         const res = await Promise.all(requests)
-        console.log('RESPONSE', res);
+        if (this._dbg) { console.log('Response', res); }
+
+        let isWarnAttr;
+        try {
+            isWarnAttr = cloneDeep(find(assessSchm.attributes, { id: 'isWarn' })['listOfObj']);
+            if (!isWarnAttr || !isWarnAttr[0]) { return; }
+            isWarnAttr[0].string = JSON.parse(isWarnAttr[0].string);
+
+        } catch (e) { }
+
+        if (this._dbg) { console.log('Preparando el mapping', ); }
+
         const c = res[0].map(x => {
+            const record = find(res[1], { reference: x._id });
+            let isWarn;
+            if(record){
+                try {
+                    if (isWarnAttr) {
+                        const attr = find(record.attributes, { id: isWarnAttr[0].id })['number'];
+                        if (isWarnAttr[0].string.$gte) {
+                            if (attr >= isWarnAttr[0].string.$gte) { isWarn = true; }
+                            else { isWarn = false; }
+                        }
+                    }
+    
+                } catch (e) {
+                    if (this._dbg) { console.log('Error en establecer if isWarnAttr', e); }
+                }
+            }
+
             return {
                 reference: x,
-                record: find(res[1], { reference: x._id }),
-                restricted: restriction.isRestricted && !find(res[2], { reference: x._id }) ? true : false
+                record,
+                restricted: restriction.isRestricted && !find(res[2], {reference:x._id}) ? true : false,
+                isWarn
             }
         });
-        console.log('ORDENADOA', c);
+
+        if (this._dbg) { console.log('list of reference', c); }
 
         return {
             batch,

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
-import { PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe } from './';
+import { PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe, IsWarnPipe } from './';
 
 @NgModule({
     imports: [],
     declarations: [
-        PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe
+        PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe, IsWarnPipe
     ],
     exports: [
-        PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe
+        PositionPipe, AttrPipe, SchmAttrPipe, UpdateInfoPipe, UserNamePipe, IsWarnPipe
     ],
     providers: [],
 })

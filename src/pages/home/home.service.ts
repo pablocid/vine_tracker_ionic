@@ -23,4 +23,5 @@ export class HomeService {
     checkSync() {
         this._store.dispatch(new SyncActions.CheckSchmAndBatchAction());
     }
+    
 }

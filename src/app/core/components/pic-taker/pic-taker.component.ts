@@ -48,6 +48,7 @@ export class PicTakerComponent implements OnInit, OnDestroy {
         this.formData.delete('file');
         this.ref.markForCheck();
     }
+    
 
     ngAfterViewInit() {
         this._unSubEventChange = Observable.fromEvent(this.inputPhoto.nativeElement, 'change')
@@ -105,7 +106,6 @@ export class PicTakerComponent implements OnInit, OnDestroy {
                 }, options);
             }
         })
-
     }
 
     private _erasePicture() {
@@ -117,19 +117,15 @@ export class PicTakerComponent implements OnInit, OnDestroy {
     public async setImage(file: File): Promise<boolean> {
         const newName = UUID.UUID();
         const maxsize = 3000000;
-
-        // this.ng2ImgMaxService.resize([input.files[0]], 100, 100).subscribe((result)=>{
-        //     console.log('Result', result, input.files);
-
-        // });
         if (
             file && file.size <= maxsize &&
             (file.type === 'image/jpeg' || file.type === 'image/png')
         ) {
             let format = file.type === 'image/jpeg' ? 'jpg' : 'png';
-            console.log('NewName', `${newName}.${format}`);
+            const theName = `test.${newName}.${format}`;
+            console.log('NewName', theName);
 
-            this.formData.append("file", file, `${newName}.${format}`);
+            this.formData.append("file", file, theName);
             console.log('formData', this.formData.get('file'));
 
             return true;

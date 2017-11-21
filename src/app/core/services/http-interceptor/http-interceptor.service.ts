@@ -7,7 +7,7 @@ import { AppStates, AuthActions } from '../../store';
 
 @Injectable()
 export class AuthenticatedHttpService extends Http {
-
+    private _dbg:boolean = false;
     constructor(
         backend: XHRBackend,
         defaultOptions: RequestOptions,
@@ -18,8 +18,8 @@ export class AuthenticatedHttpService extends Http {
     }
 
     request(url: string | Request, options?: RequestOptionsArgs): Observable<Response> {
-        console.log('Http requeest intercepted');
-        //console.log('TOken', this._token);
+        if(this._dbg){console.log('Http requeest intercepted',);}
+        if(this._dbg){console.log('token', this._token);}
 
         this._setHeader(url, options, this._token);
         return super.request(url, options)
@@ -28,10 +28,10 @@ export class AuthenticatedHttpService extends Http {
                     console.log('The authentication session expires or the user is not authorised. Redirect to page.');
                     this._store.dispatch(new AuthActions.SesssionExpiredAction());
                 }
-                //console.log('Error status', error);
+                if(this._dbg){console.log('Error status',error);}
 
                 if (error.status >= 500 && error.status < 600) {
-                    console.log('Error de comunicación con el servidor: ' + typeof error.status)
+                    if(this._dbg){console.log('Error de comunicación con el servidor: ', typeof error.status);}
                 }
 
                 if (error.status === 0) {
@@ -54,10 +54,7 @@ export class AuthenticatedHttpService extends Http {
             url.headers.append('Authorization', `Bearer ${token}`);
             url.withCredentials = false;
         }
-        //console.log('URL', url);
-
-
-
+        if(this._dbg){console.log('URL',url);}
     }
 }
 

@@ -19,7 +19,7 @@ export interface AssessmentState {
     path?: any,
     name: string,
     index: number;
-    formData?:FormData
+    formData?: FormData
   }
   //result: string[];
 }
@@ -132,7 +132,7 @@ export function AssessmentReducer(state = initialState, action: assessment.Actio
     case assessment.UPLOAD_IMG_SUCCESS: {
       console.log('upload success');
       state.entities.record = updateImageListAfterUploadedImg(state);
-      
+
       return {
         ...state,
         uploading: false,
@@ -160,22 +160,22 @@ export function AssessmentReducer(state = initialState, action: assessment.Actio
 
 function updateImageListAfterUploadedImg(state: AssessmentState): IRecord {
   console.log('stae in update image list after upladed img', state);
-  
+
   const attrId = state.editing.id;
   const index = state.entities.record.attributes.map(x => x.id).indexOf(attrId);
-  if(index === -1){
+  if (index === -1) {
     console.log('Attributo de imagenes no existe, creando ...');
     const list = [];
     list[state.img.index] = state.img.name;
-    state.entities.record.attributes.push({id:attrId, list})
+    state.entities.record.attributes.push({ id: attrId, list })
     return cloneDeep(state.entities.record);
   }
-  if(!Array.isArray(state.entities.record.attributes[index].list)){
+  if (!Array.isArray(state.entities.record.attributes[index].list)) {
     state.entities.record.attributes[index].list = [];
   }
   state.entities.record.attributes[index].list[state.img.index] = state.img.name;
   console.log('state.entities.record.attributes[index]', state.entities.record.attributes[index]);
-  
+
   return cloneDeep(state.entities.record);
 }
 
@@ -186,6 +186,8 @@ function currentEvaluation(record: IRecord, id: string): IAttribute {
 
 function setIfAttrNotExist(record: IRecord, id: string) {
   if (!find(record.attributes, { id })) {
+    console.log('Attr no existe');
+    
     record.attributes.push({ id });
   }
 }
@@ -221,10 +223,24 @@ function setRecordAndSchema(record: IRecord, schema: ISchemaEmbedded, editable: 
   if (!record.created) { record.created = (new Date()).toISOString(); }
   if (!record.schm) { record.schm = schema._id; }
   if (!record.updated) { record.updated = []; }
-  if (!record.attributes) { record.attributes = [] }
-  if (referenceId && !find(record.attributes, { id: '57c42f77c8307cd5b82f4486' })) {
-    record.attributes.push({ id: "57c42f77c8307cd5b82f4486", reference: referenceId });
+
+  if (!record.attributes || !Array.isArray(record.attributes) || !record.attributes.length) {
+    record.attributes = cloneDeep(find(schema.attributes, { id: 'attributes' })['list']).map(x => ({ id: x }));
   }
+
+  if (referenceId && record.attributes) {
+    if (find(record.attributes, { id: "57c42f77c8307cd5b82f4486" })) {
+      find(record.attributes, { id: "57c42f77c8307cd5b82f4486" })['reference'] = referenceId;
+    } else {
+      record.attributes.push({ id: "57c42f77c8307cd5b82f4486", reference: referenceId })
+    }
+  }
+  console.log('setting record', record);
+  
+  // if (!record.attributes) { record.attributes = [] }
+  // if (referenceId && !find(record.attributes, { id: '57c42f77c8307cd5b82f4486' })) {
+  //   record.attributes.push({ id: "57c42f77c8307cd5b82f4486", reference: referenceId });
+  // }
 
   return { record, schema, editable, isNew };
 }

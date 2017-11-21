@@ -407,6 +407,11 @@ export class LocalDbStoreService {
         return schema
     }
 
+    public async getSchemaById(_id: string): Promise<ISchema> {
+        await this.loadDatabase();
+        return this.schemas.findOne({ _id });
+    }
+
     public async getBatches(): Promise<IRecord[]> {
         await this.loadDatabase();
         return this.records.find({ schm: '59407b2a9d4e5f0011f6df5c' });

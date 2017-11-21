@@ -35,15 +35,16 @@ export class BatchAssessmentEffects {
         const batchA = b[1];
         const referenceId = batchA.selected.reference._id;
         const assessmentId = batchA.result.schema._id;
-        return { referenceId, assessmentId }
+        return { referenceId, assessmentId, state: b[1] }
       } catch (e) {
-        return { assessmentId: undefined, referenceId: undefined }
+        return { assessmentId: undefined, referenceId: undefined, state: undefined }
       }
     })
-    .switchMap(payload => this.batchAssessmentService.updateSelectedAssessment(payload.assessmentId, payload.referenceId)
-      // If successful, dispatch success action with result
+    .switchMap(
+    payload => this.batchAssessmentService
+      .updateSelectedAssessment(payload.assessmentId, payload.referenceId)
+      .switchMap(record => this.batchAssessmentService.updateRecordInLIst(payload.state.result.data, record, payload.state.result.schema))
       .map(res => ({ type: batchAssessment.UPDATE_ASSESS_SUCCESS, payload: res }))
-      // If request fails, dispatch failed action
       .catch(() => Observable.of({ type: batchAssessment.UPDATE_ASSESS_FAIL }))
     );
 

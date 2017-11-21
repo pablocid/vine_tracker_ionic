@@ -17,5 +17,6 @@ export class AboutPage implements OnInit{
   }
 
   ngOnInit(){  }
+  
 
 }
