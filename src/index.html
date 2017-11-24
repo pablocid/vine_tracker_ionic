@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
 <head>
   <meta charset="UTF-8">
   <title>VineTracker</title>
@@ -10,7 +11,7 @@
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4e8ef7">
-  
+
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -19,20 +20,42 @@
   <script src="cordova.js"></script>
 
   <!-- un-comment this code to enable service worker -->
-  <!-- <script>
+  <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
-        .then(() => console.log('service worker installed'))
+        .then((reg) => {
+          console.log('service worker installed');
+
+          reg.onupdatefound = () => {
+            const installingWorker = reg.installing;
+            installingWorker.onstatechange = () => {
+              switch (installingWorker.state) {
+                case 'installed':
+                  if (navigator.serviceWorker.controller) {
+                    // new update available
+                    alert("new update available")
+                    resolve(true);
+                  } else {
+                    // no update available
+                    alert("no update available")
+                    resolve(false);
+                  }
+                  break;
+              }
+            };
+          };
+        })
         .catch(err => console.error('Error', err));
     }
-  </script> -->
+  </script>
   <!-- <meta name="robots" content="noarchive"> -->
 
-<!-- npm run ionic:build --prod -->
+  <!-- npm run ionic:build --prod -->
 
   <link href="build/main.css" rel="stylesheet">
 
 </head>
+
 <body>
 
   <!-- Ionic's root component and where the app will load -->
@@ -49,4 +72,5 @@
   <script src="build/main.js"></script>
 
 </body>
+
 </html>

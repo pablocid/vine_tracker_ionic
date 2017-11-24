@@ -22,7 +22,6 @@ export class UserNamePipe implements PipeTransform {
                 .sort((a, b) => {
                     if (a.date > b.date) { return -1; } else { return 1; }
                 })
-                .reverse()
             [0].user;
 
             const userName = this._ldb.getUserById(userId)

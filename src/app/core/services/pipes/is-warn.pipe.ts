@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class IsWarnPipe implements PipeTransform {
+    private _dbg = true;
     constructor(
         private _ldb: LocalDbStoreService
     ) {
@@ -15,29 +16,41 @@ export class IsWarnPipe implements PipeTransform {
     }
     transform(record: IRecord, ...args: any[]): any {
 
-        return Observable.fromPromise(this._ldb.getSchemaById(record.schm))
-            .filter(x => !!x)
-            .map(schema => {
-                try {
-                    const isWarn = find(schema.attributes, { id: 'isWarn' })['listOfObj'];
-                    if (!isWarn || !isWarn[0]) { return; }
-                    //solo tomaré el primer elemento del array
-                    console.log('isWarn[0].id', isWarn[0].id);
-                    console.log('value.record.attributes', record.attributes);
-                    
-                    isWarn[0].string = JSON.parse(isWarn[0].string);
+        return Observable.fromPromise(this.getResponse(record))
+            .filter(x => !!x);
+    }
 
-                    const attr = find(record.attributes, { id: isWarn[0].id })['number'];
-                    if (isWarn[0].string.$gte) {
-                        if (attr >= isWarn[0].string.$gte) { return true }
-                        else { return false; }
-                    }
+    private async getResponse(record: IRecord) {
+        if (this._dbg) { console.log('Se esta ejecutando el isWarn Pipe', ); }
+        const schema = await this._ldb.getSchemaById(record.schm);
+        if (!schema) { return; }
 
-                } catch (e) {
-                    console.log('Error in IsWarn', e)
-                    return;
+        try {
+            const isWarn = find(schema.attributes, { id: 'isWarn' })['listOfObj'];
+            if (!isWarn || !isWarn[0]) { return; }
+            //solo tomaré el primer elemento del array
+
+            isWarn[0].string = JSON.parse(isWarn[0].string);
+            const attrSchm = await this._ldb.getSchemaById(isWarn[0].id);
+            const dd = find(attrSchm.attributes, { id: 'datatype' })['string'];
+            const attr = find(record.attributes, { id: isWarn[0].id })[dd];
+
+            if (isWarn[0].string.hasOwnProperty("$gte")) {
+                if (attr >= isWarn[0].string.$gte) { return true }
+                else { return false; }
+            }
+
+            if (isWarn[0].string.hasOwnProperty("$eq")) {
+                if (attr === isWarn[0].string.$eq) {
+                    return true;
+                } else {
+                    return false;
                 }
-            });
+            }
 
+        } catch (e) {
+            console.log('Error in IsWarn', e)
+            return;
+        }
     }
 }

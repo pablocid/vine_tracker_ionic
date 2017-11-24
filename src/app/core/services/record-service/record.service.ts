@@ -268,21 +268,20 @@ export class RecordService {
         }
     }
 
-    public async getSubBatchData(assessmentId: string, batchId: string, subBatchFilter: string):
-        Promise<{
-            schema: ISchemaEmbedded,
-            schemaRef: ISchemaEmbedded,
-            batch: IRecord,
-            subBatchFilter: any,
-            data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]
-        }> {
+    public async getSubBatchData(assessmentId: string, batchId: string, subBatchFilter: string): Promise<{
+        schema: ISchemaEmbedded,
+        schemaRef: ISchemaEmbedded,
+        batch: IRecord,
+        subBatchFilter: any,
+        data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]
+    }> {
         //console.log('Arguments', assessmentId, batchId, subBatchFilter);
         const batch = await this._ldb.getBatchById(batchId);
         const assessSchm = await this._ldb.getSchemaEmbedded(assessmentId);
 
-        console.log('assessSchm', assessSchm);
+        if (this._dbg) { console.log('assessSchm', assessSchm); }
         if (!batch || !assessSchm) {
-            console.log('ERROR: batch or assessSchm is undefined');
+            if (this._dbg) { console.log('ERROR: batch or assessSchm is undefined'); }
 
             return;
         }
@@ -339,28 +338,51 @@ export class RecordService {
         if (this._dbg) { console.log('Response', res); }
 
         let isWarnAttr;
+        let datatypeIsWarn;
         try {
             isWarnAttr = cloneDeep(find(assessSchm.attributes, { id: 'isWarn' })['listOfObj']);
-            if (!isWarnAttr || !isWarnAttr[0]) { return; }
+            if (!isWarnAttr || !isWarnAttr[0]) { if (this._dbg) { console.log('No esta seteado el attributo isWarn en el schema', ); } return; }
             isWarnAttr[0].string = JSON.parse(isWarnAttr[0].string);
+            if (this._dbg) { console.log('IS Schema attr isWarn', isWarnAttr[0].id); }
+            const isWarnAttrSchm = await this._ldb.getSchemaById(isWarnAttr[0].id);
+            if (this._dbg) { console.log('isWarnAttrSchm', isWarnAttrSchm); }
+            const input = find(isWarnAttrSchm.attributes, { id: 'input' })['reference'];
+            if (this._dbg) { console.log('Input ID schm', input); }
+            const isWarnInput = await this._ldb.getSchemaById(input);
+            if (this._dbg) { console.log('isWarnInput', isWarnInput); }
+            datatypeIsWarn = find(isWarnInput.attributes, { id: 'dataType' })['string'];
+            if (this._dbg) { console.log('Datatype is warn', datatypeIsWarn); }
 
-        } catch (e) { }
+        } catch (e) {
+            if (this._dbg) { console.log('Error en isWarnAttr', e); }
+        }
 
         if (this._dbg) { console.log('Preparando el mapping', ); }
+
+        const self = this;
 
         const c = res[0].map(x => {
             const record = find(res[1], { reference: x._id });
             let isWarn;
-            if(record){
+            if (record) {
                 try {
                     if (isWarnAttr) {
-                        const attr = find(record.attributes, { id: isWarnAttr[0].id })['number'];
+                        const attr = find(record.attributes, { id: isWarnAttr[0].id })[datatypeIsWarn];
+
                         if (isWarnAttr[0].string.$gte) {
                             if (attr >= isWarnAttr[0].string.$gte) { isWarn = true; }
                             else { isWarn = false; }
                         }
+
+                        if (isWarnAttr[0].string.hasOwnProperty("$eq")) {
+                            if (attr === isWarnAttr[0].string.$eq) {
+                                isWarn = true;
+                            } else {
+                                isWarn = false;
+                            }
+                        }
                     }
-    
+
                 } catch (e) {
                     if (this._dbg) { console.log('Error en establecer if isWarnAttr', e); }
                 }
@@ -369,7 +391,7 @@ export class RecordService {
             return {
                 reference: x,
                 record,
-                restricted: restriction.isRestricted && !find(res[2], {reference:x._id}) ? true : false,
+                restricted: restriction.isRestricted && !find(res[2], { reference: x._id }) ? true : false,
                 isWarn
             }
         });

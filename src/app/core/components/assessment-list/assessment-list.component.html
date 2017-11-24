@@ -9,8 +9,8 @@
         <ion-list>
             <ion-item *ngFor="let assessment of assessments">
                 <h1>{{assessment | schmAttr:'listViewLabel' | uppercase }}</h1>
-                <button color="secondary" class="button-space" ion-button full  large (click)="btnAction('single',assessment._id)">planta</button>
-                <button color="primary" class="button-space" ion-button full large (click)="btnAction('batch',{assessmentId: assessment._id, batchId:batch._id})">hilera</button>
+                <button color="secondary" class="button-space" ion-button full  large (click)="btnAction('single',assessment._id)" *ngIf="assessment | editable">planta</button>
+                <button color="primary" class="button-space" ion-button full large (click)="btnAction('batch',{assessmentId: assessment._id, batchId:batch._id})" *ngIf="assessment | editable">hilera</button>
                 <button color="light" class="button-space" ion-button full large (click)="btnAction('query',assessment._id)">consulta</button>
               
             </ion-item>

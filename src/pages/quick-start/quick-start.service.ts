@@ -14,16 +14,16 @@ export class QuickStartService {
     public status$ = this._store.select(s => s.quickStart.status);
     public assessments$ = this._store
         .select(s => s.quickStart.entities.assessments)
-        .map(x => {
+        // .map(x => {
 
-            return x.filter((element, index, array) => {
-                try {
-                    return find(element.attributes, { id: 'editable' })['boolean'];
-                } catch (e) {
-                    return false;
-                }
-            })
-        })
+        //     return x.filter((element, index, array) => {
+        //         try {
+        //             return find(element.attributes, { id: 'editable' })['boolean'];
+        //         } catch (e) {
+        //             return false;
+        //         }
+        //     })
+        // })
     public hilera$ = this._store.select(s => s.quickStart.entities.refInfo)
         .filter(x => !!x)
         .map(x => x.record.attributes)
