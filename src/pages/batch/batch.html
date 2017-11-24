@@ -10,6 +10,7 @@
     <ion-toolbar color="primary">
       <ion-title style=" text-align:center;">{{assessmentName$ | async}}</ion-title>
       <div style="color:white; font-size:14px; text-align:center;">{{subBatchName$ | async}}</div>
+      <div *ngIf="updatingList$ | async"  style="color:white; font-size:20px; text-align:center;"> actualizando la lista de plantas ...</div>
     </ion-toolbar>
     <!-- <ion-title>{{assessmentName$ | async}}</ion-title>
     <ion-buttons end>

@@ -11,14 +11,17 @@ import { File as FileNative } from '@ionic-native/file';
 import { Transfer } from '@ionic-native/transfer';
 import { FilePath } from '@ionic-native/file-path';
 import { PicTakerComponent } from '../components/pic-taker/pic-taker.component';
-
 import { Ng2ImgMaxModule } from 'ng2-img-max';
+
+import { ImageToDataUrlModule } from 'ngx-image2dataurl';
+
 const IMPORTS = [
     CommonModule,
     IonicModule,
     MarkdownModule.forRoot(),
     QRCodeModule,
-    Ng2ImgMaxModule
+    Ng2ImgMaxModule,
+    ImageToDataUrlModule
 ];
 
 import {

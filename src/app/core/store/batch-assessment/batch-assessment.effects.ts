@@ -49,3 +49,42 @@ export class BatchAssessmentEffects {
     );
 
 }
+
+/*
+
+
+  @Effect() updateAssess$ = this.actions$
+    .ofType(batchAssessment.UPDATE_ASSESS)
+    .map(toPayload)
+    .withLatestFrom(this._store.select(s => s.batchAssessment))
+    .map(b => {
+      try {
+        const batchA = b[1];
+        const referenceId = batchA.selected.reference._id;
+        const assessmentId = batchA.result.schema._id;
+        return { referenceId, assessmentId, state: b[1] }
+      } catch (e) {
+        throw e;
+      }
+    })
+    .switchMap(
+    payload => this.batchAssessmentService
+      .updateSelectedAssessment(payload.assessmentId, payload.referenceId)
+      .switchMap(record => this.batchAssessmentService.updateRecordInLIst(payload.state.result.data, record, payload.state.result.schema))
+      .map(res => ({ type: batchAssessment.UPDATE_ASSESS_SUCCESS, payload: res }))
+      .catch(() => {
+        console.log('Catching error in update_assess');
+        
+        return Observable.of({ type: batchAssessment.UPDATE_ASSESS_FAIL })
+      })
+    )
+    // .catch(() => {
+    //   console.log('Catching error in update_assess');
+      
+    //   return Observable.of({ type: batchAssessment.UPDATE_ASSESS_FAIL })
+    // })
+
+
+
+
+*/

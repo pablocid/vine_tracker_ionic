@@ -56,7 +56,7 @@
     <ion-grid>
         <ion-row>
                 <ion-col col-4><h3>enteros</h3></ion-col>
-                <ion-col col-4><h3>decimales</h3></ion-col>
+                <ion-col col-4><h3> <span *ngIf="decimales && decimales.length">decimales</span></h3></ion-col>
                 <ion-col col-4><h3>unidad</h3></ion-col>
             <ion-col col-4>
                 <select placeholder="enteros" color="primary" class="number-list-select" name="" id="" [(ngModel)]="int">
@@ -76,7 +76,7 @@
                 </ion-select> -->
             </ion-col>
             <ion-col col-4 >
-                <h1 style="font-size:45px;">{{unit$ | async }}</h1>
+                <h1 style="font-size:25px;">{{unit$ | async }}</h1>
             </ion-col>
         </ion-row>
     </ion-grid>

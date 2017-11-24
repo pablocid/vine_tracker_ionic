@@ -1,4 +1,32 @@
-<input hidden type="file" #inputPhoto accept="image/*" />
+<!-- <input hidden type="file" #inputPhoto accept="image/*" />
+<ion-grid>
+    <ion-row>
+        <ion-col>
+                <ion-icon *ngIf="!formData.get('file')" style="zoom:3.0;"  name="add-circle"  color="primary" (click)="takePicture()"></ion-icon>
+                <ion-icon *ngIf="formData.get('file')" style="zoom:3.0;"  name="remove-circle" color="primary" (click)="remove()"></ion-icon>
+        </ion-col> -->
+        <!-- <ion-col>
+                <ion-icon *ngIf="formData.get('file')" style="zoom:3.0;"  name="cloud-upload" color="primary" (click)="upload()"></ion-icon>
+        </ion-col> -->
+        <!-- <ion-col>
+                <div #holder style="width:100%; height:auto;"></div>
+        </ion-col>
+    </ion-row>
+</ion-grid> -->
+
+<!-- <button ion-button full large (click)="takePicture()"> Tomar foto</button> -->
+
+<!-- <button *ngIf="formData.get('file')" ion-button full large (click)="upload()"> Subir imagen</button> -->
+
+
+<!-- - -->
+
+<!-- <input hidden type="file" #inputPhoto accept="image/*" /> -->
+
+
+<input hidden #inputPhoto type="file" [imageToDataUrl]="options"
+  (imageSelected)="selected($event)">
+  
 <ion-grid>
     <ion-row>
         <ion-col>
@@ -6,14 +34,7 @@
                 <ion-icon *ngIf="formData.get('file')" style="zoom:3.0;"  name="remove-circle" color="primary" (click)="remove()"></ion-icon>
         </ion-col>
         <!-- <ion-col>
-                <ion-icon *ngIf="formData.get('file')" style="zoom:3.0;"  name="cloud-upload" color="primary" (click)="upload()"></ion-icon>
-        </ion-col> -->
-        <ion-col>
                 <div #holder style="width:100%; height:auto;"></div>
-        </ion-col>
+        </ion-col> -->
     </ion-row>
 </ion-grid>
-
-<!-- <button ion-button full large (click)="takePicture()"> Tomar foto</button> -->
-
-<button *ngIf="formData.get('file')" ion-button full large (click)="upload()"> Subir imagen</button>

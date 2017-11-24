@@ -35,6 +35,11 @@ export class BatchPage implements OnInit, OnDestroy {
   public unLoading: Subscription;
   public unViewDidEnter: Subscription;
   public _dbg = false;
+  public updatingList$ = this._service.updatingList$;
+  
+  private _isFirstLoading = true;
+
+
   constructor(
     private _service: BatchPageService,
     public navCtrl: NavController,
@@ -48,13 +53,14 @@ export class BatchPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.unViewDidEnter = this.navCtrl.viewDidEnter.map(x=>x.id).subscribe(x=>{
-      if(this._dbg){console.log('viewDidEnter in batch componnent',x);}
-      if(x === 'BatchPage'){
-        this._service.updateSelectedAssess();
-      }
-      
-    })
+    this.unViewDidEnter = this.navCtrl.viewDidEnter.map(x => x.id)
+      .subscribe(x => {
+        if (this._dbg) { console.log('viewDidEnter in batch componnent', x); }
+        if (x === 'BatchPage' && !this._isFirstLoading) {
+          this._service.updateSelectedAssess();
+        }
+        if(this._isFirstLoading){ this._isFirstLoading = false;}
+      })
 
     this.unLoading = this.loading$.subscribe(x => {
       if (x) {
@@ -89,7 +95,7 @@ export class BatchPage implements OnInit, OnDestroy {
     if (this.unLoading) {
       this.unLoading.unsubscribe();
     }
-    if(this.unViewDidEnter){
+    if (this.unViewDidEnter) {
       this.unViewDidEnter.unsubscribe();
     }
   }

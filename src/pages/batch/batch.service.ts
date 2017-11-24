@@ -49,17 +49,21 @@ export class BatchPageService {
                 subBatchName
             }
         })
+
     public updateSelectedAssess() {
         this._store.dispatch(new BatchAssessmentActions.UpdateAssessAction())
     }
 
-    public selectAssess(id: string) {
-        this._store.dispatch(new BatchAssessmentActions.SelectAssessAction(id));
-    }
+    public updatingList$ = this._store.select(s => s.batchAssessment.updatingSelected);
+
     constructor(
         private _store: Store<AppStates>,
     ) {
         //this._store.dispatch(new BatchAssessmentActions.LoadAction({ assessmentId: '57c42f2fc8307cd5b82f4484', batchId: '594ea47795a22934479bb24a', subBatchFilter: '[{"key":"5807af9231f55d0010aaffe5","value":2,"datatype":"number"}]' }))
+    }
+
+    public selectAssess(id: string) {
+        this._store.dispatch(new BatchAssessmentActions.SelectAssessAction(id));
     }
 
 

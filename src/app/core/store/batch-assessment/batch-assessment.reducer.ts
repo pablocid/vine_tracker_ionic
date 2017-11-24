@@ -69,6 +69,8 @@ export function BatchAssessmentReducer(state = initialState, action: batchAssess
     }
 
     case batchAssessment.UPDATE_ASSESS: {
+      console.log('Uploading assess list');
+      
       return {
         ...state,
         updatingSelected: true
@@ -76,7 +78,7 @@ export function BatchAssessmentReducer(state = initialState, action: batchAssess
     }
 
     case batchAssessment.UPDATE_ASSESS_SUCCESS: {
-
+      console.log('UPDATE_ASSESS_SUCCESS');
       state.result = {
         ...state.result,
         data: action.payload

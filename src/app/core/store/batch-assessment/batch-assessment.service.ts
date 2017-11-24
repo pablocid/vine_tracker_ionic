@@ -5,7 +5,7 @@ import { IRecord, ISchemaEmbedded } from '../../classes';
 import { find, cloneDeep } from 'lodash';
 @Injectable()
 export class BatchAssessmentService {
-
+  private _dbg:boolean = false;
   constructor(
     private _rs: RecordService
   ) { }
@@ -26,7 +26,8 @@ export class BatchAssessmentService {
   }
 
   public updateRecordInLIst(data: { record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[], record: IRecord, assessSchm: ISchemaEmbedded): Observable<{ record: IRecord, reference: IRecord, restricted: boolean, isWarn: boolean }[]> {
-    console.log('Updated Record is: ', record)
+    if(this._dbg){console.log('Updated Record is: ',record);}
+
     try {
       const idRef = find(record.attributes, { id: '57c42f77c8307cd5b82f4486' })['reference'];
       const index = data.map(x => x.reference._id).indexOf(idRef);
@@ -45,13 +46,13 @@ export class BatchAssessmentService {
         return Observable.of(data);;
       }
     } catch (e) {
-      console.log('Error in finding update selected record');
+      if(this._dbg){console.log('Error in finding update selected record',);}
       return Observable.of(data);
     }
   }
 
   private _isWarn(record: IRecord, schema: ISchemaEmbedded) {
-    //console.log('Record', record, 'schema', schema);
+    if(this._dbg){console.log('Record and schema', {record, schema});}
     
     try {
       const isWarn = cloneDeep(find(schema.attributes, { id: 'isWarn' })['listOfObj']);
@@ -66,7 +67,7 @@ export class BatchAssessmentService {
       }
 
     } catch (e) {
-      console.log('Error in IsWarn', e)
+      if(this._dbg){console.log('Error in IsWarn',e);}
       return false;
     }
   }
