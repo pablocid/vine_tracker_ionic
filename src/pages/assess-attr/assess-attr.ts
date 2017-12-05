@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar, AlertController } from 'ionic-angular';
 import { AssessAttrService } from './assess-attr.service';
 import {find} from 'lodash';
 /**
@@ -9,7 +9,7 @@ import {find} from 'lodash';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+@IonicPage({priority: 'low'})
 @Component({
   selector: 'page-assess-attr',
   templateUrl: 'assess-attr.html',
@@ -19,7 +19,8 @@ export class AssessAttrPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _service: AssessAttrService
+    private _service: AssessAttrService,
+    public alertCtrl: AlertController
   ) {
   }
   public attributeAssess$ = this._service.attributeAssess$;
@@ -32,10 +33,6 @@ export class AssessAttrPage {
       return '';
     }
   })
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AssessAttrPage');
-  }
 
   output($event: { message: string, data: any }) {
     console.log('$event', $event);
@@ -67,6 +64,41 @@ export class AssessAttrPage {
     }
 
     //this.redirect();
+  }
+
+  ionViewDidLoad() {
+    this.setBackButtonAction()
+  }
+  @ViewChild(Navbar) navBar: Navbar;
+
+  setBackButtonAction() {
+    this.navBar.backButtonClick = () => {
+      //Write here wherever you wanna do
+      //this.navCtrl.pop()
+      this.showConfirm()
+    }
+  }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Salir sin guardar ?',
+      //message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Si',
+          handler: () => {
+            this._service.cancel();
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
 }

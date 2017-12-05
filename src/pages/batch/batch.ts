@@ -11,7 +11,7 @@ import { find } from 'lodash';
 import 'rxjs/add/operator/filter';
 
 
-@IonicPage()
+@IonicPage({priority: 'high'})
 @Component({
   selector: 'page-batch',
   templateUrl: 'batch.html',
@@ -34,10 +34,11 @@ export class BatchPage implements OnInit, OnDestroy {
   public espalderaLoading: Loading;
   public unLoading: Subscription;
   public unViewDidEnter: Subscription;
-  public _dbg = false;
+  public _dbg = true;
   public updatingList$ = this._service.updatingList$;
   
   private _isFirstLoading = true;
+
 
 
   constructor(
@@ -46,9 +47,7 @@ export class BatchPage implements OnInit, OnDestroy {
     public navParams: NavParams,
     public loadingCtrl: LoadingController
   ) {
-    this.espalderaLoading = this.loadingCtrl.create({
-      content: 'cargando espaldera ...'
-    })
+    
   }
 
   ngOnInit() {
@@ -64,9 +63,14 @@ export class BatchPage implements OnInit, OnDestroy {
 
     this.unLoading = this.loading$.subscribe(x => {
       if (x) {
+        this.espalderaLoading = this.loadingCtrl.create({
+          content: 'cargando espaldera ...'
+        })
         this.espalderaLoading.present();
-      } else {
+      } else if(this.espalderaLoading){
         this.espalderaLoading.dismissAll();
+        this.espalderaLoading = undefined;
+        
       }
     })
 
@@ -88,7 +92,9 @@ export class BatchPage implements OnInit, OnDestroy {
     console.log('Event', $event);
 
   }
+
   ngOnDestroy() {
+    if(this._dbg){console.log('BatchPage ngOnDestroy');}
     if (this._queryParamUnsub) {
       this._queryParamUnsub.unsubscribe();
     }
@@ -98,5 +104,14 @@ export class BatchPage implements OnInit, OnDestroy {
     if (this.unViewDidEnter) {
       this.unViewDidEnter.unsubscribe();
     }
+
+    if (this.espalderaLoading) {
+      this.espalderaLoading.dismissAll();
+      this.espalderaLoading = undefined;
+    }
+  }
+
+  updateSubBatch(){
+    this._service.updateSubBatch();
   }
 }

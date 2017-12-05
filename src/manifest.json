@@ -1,8 +1,11 @@
 {
+  "manifest_version": 1,
   "name": "VineTracker 2.0",
-  "short_name": "VT",
-  "start_url": "index.html",
+  "short_name": "VineTracker",
+  "start_url": "/",
+  "launch_path": "/",
   "display": "fullscreen",
+  "fullscreen": "true",
   "orientation": "portrait",
   "icons": [{
     "src": "assets/imgs/logo.png",

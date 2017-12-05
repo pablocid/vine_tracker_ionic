@@ -24,7 +24,9 @@ import { FaIconComponent } from './core/components/fa-icon/fa-icon.component';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(VineTrackerApp),
+    IonicModule.forRoot(VineTrackerApp, {
+      preloadModules: true
+    }),
     CoreStoreModule,
     HttpModule
   ],

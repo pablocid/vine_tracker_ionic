@@ -4,7 +4,7 @@ import { SynchronizerService } from './sync.service';
 import { LoadingController, Loading } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
-@IonicPage()
+@IonicPage({ priority: 'high' })
 @Component({
   selector: 'page-sync',
   templateUrl: 'sync.html',
@@ -40,9 +40,9 @@ export class SyncPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     //this.loaderCheckSchm = this.loadingCtrl.create({ content: 'revisando si los esquemas están actualizados' });
-    this.loaderCheckBatch = this.loadingCtrl.create({ content: 'revisando si las espalderas están actualizados' });
-    this.loaderSyncSchm = this.loadingCtrl.create({ content: 'sincronizando esquemas' });
-    this.loaderSyncBatch = this.loadingCtrl.create({ content: 'sincronizando espalderas' });
+
+
+
 
     // const loaderCheckSchmBatch = this.loadingCtrl.create({ content: 'revisando actualizaciones ...' });
 
@@ -58,25 +58,38 @@ export class SyncPage implements OnInit, OnDestroy {
       }
     });
     this._uncheckingBatch = this._service.checkingBatch$.subscribe(x => {
-      if (x) { this.loaderCheckBatch.present(); } else { this.loaderCheckBatch.dismiss().catch(); }
+      if (x) {
+        this.loaderCheckBatch = this.loadingCtrl.create({ content: 'revisando si las espalderas están actualizados' });
+        this.loaderCheckBatch.present();
+      }
+      else if (this.loaderCheckBatch) { this.loaderCheckBatch.dismiss().catch(); this.loaderCheckBatch = undefined; }
     });
     this._unSyncSchm = this._service.schmSynchronizing$.subscribe(x => {
-      if (x) { this.loaderSyncSchm.present(); } else { this.loaderSyncSchm.dismiss().catch(); }
+      if (x) {
+        this.loaderSyncSchm = this.loadingCtrl.create({ content: 'sincronizando esquemas' });
+        this.loaderSyncSchm.present();
+      } else if (this.loaderSyncSchm) {
+        this.loaderSyncSchm.dismiss();
+        this.loaderSyncSchm = undefined;
+      }
     })
     this._unSyncBatch = this._service.batchSynchronizing$.subscribe(x => {
-      if (x) { this.loaderSyncBatch.present(); } else { this.loaderSyncBatch.dismiss(); }
+      if (x) {
+        this.loaderSyncBatch = this.loadingCtrl.create({ content: 'sincronizando espalderas' });
+        this.loaderSyncBatch.present();
+      } else if (this.loaderSyncBatch) { this.loaderSyncBatch.dismiss(); this.loaderSyncBatch = undefined; }
     })
 
     // this._unCheckingSchmBatch = this._service.checkingSchmBatch$.subscribe(x => {
     //   if (x) { this.loaderCheckSchmBatch.present(); } else { this.loaderCheckSchmBatch.dismissAll(); }
     // })
 
-    setTimeout(() => {
-      this.checkSchmAndBatch();
-    }, 500)
+    // setTimeout(() => {
+    //   this.checkSchmAndBatch();
+    // }, 500)
   }
 
-  checkSchmAndBatch(){
+  checkSchmAndBatch() {
     this._service.checkSchmAndBatch();
   }
 
@@ -96,6 +109,10 @@ export class SyncPage implements OnInit, OnDestroy {
     if (this._unCheckingSchmBatch) {
       this._unCheckingSchmBatch.unsubscribe();
     }
+
+    if (this.loaderCheckBatch) { this.loaderCheckBatch.dismiss(); this.loaderCheckBatch = undefined; }
+    if (this.loaderSyncSchm) { this.loaderSyncSchm.dismiss(); this.loaderSyncSchm = undefined; }
+    if (this.loaderSyncBatch) { this.loaderSyncBatch.dismiss(); this.loaderSyncBatch = undefined; }
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad SyncPage');

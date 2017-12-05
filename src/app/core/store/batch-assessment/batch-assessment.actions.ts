@@ -4,6 +4,8 @@ export const LOAD = '[Batch Assessment] Load';
 export const LOAD_SUCCESS = '[Batch Assessment] Load Success';
 export const LOAD_FAIL = '[Batch Assessment] Load Fail';
 export const UPDATE = '[Batch Assessment] Update';
+export const UPDATE_SUCCESS = '[Batch Assessment] Update Success';
+export const UPDATE_FAIL = '[Batch Assessment] Update Fail';
 
 export const LOAD_ASSESSMENT = '[Batch Assessment] Load Assessment';
 export const LOAD_ASSESSMENT_SUCCESS = '[Batch Assessment] Load Assessment Success';
@@ -65,6 +67,12 @@ export class UpdateAssessFailAction implements Action {
 export class UpdateAction implements Action {
   readonly type = UPDATE;
 }
+export class UpdateActionSuccess implements Action {
+  readonly type = UPDATE_SUCCESS;
+}
+export class UpdateActionFail implements Action {
+  readonly type = UPDATE_FAIL;
+}
 
 export type Actions =
   | LoadAction
@@ -74,8 +82,13 @@ export type Actions =
   | SelectAssessAction
   | UpdateAssessAction
   | UpdateAssessSuccessAction
-  | UpdateAssessFailAction;
+  | UpdateAssessFailAction
+  | UpdateActionSuccess
+  | UpdateActionFail;
+
 
 export const BatchAssessmentActions = {
-  LoadAction, LoadSuccessAction, LoadFailAction, UpdateAction, SelectAssessAction, UpdateAssessAction, UpdateAssessSuccessAction, UpdateAssessFailAction
+  LoadAction, LoadSuccessAction, LoadFailAction, 
+  UpdateAction, SelectAssessAction, UpdateAssessAction, UpdateAssessSuccessAction, UpdateAssessFailAction,
+  UpdateActionSuccess,  UpdateActionFail
 }

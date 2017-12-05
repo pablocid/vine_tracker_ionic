@@ -66,5 +66,9 @@ export class BatchPageService {
         this._store.dispatch(new BatchAssessmentActions.SelectAssessAction(id));
     }
 
+    public updateSubBatch(){
+        this._store.dispatch(new BatchAssessmentActions.UpdateAction());
+    }
+
 
 }

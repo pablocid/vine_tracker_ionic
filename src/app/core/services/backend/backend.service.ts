@@ -81,7 +81,12 @@ export class BackendService {
     }
 
     public findOneRecordByIdObserable(id: any) {
-        return this._docsFromServerObservable(`${this._urlRecords}/${id}`, null);
+        const query = [
+            {$match: {_id:{$oid:id}}}
+        ]
+        console.log('findOneRecordByIdObserable', query);
+        
+        return this._docsFromServerObservable(this._urlRecordsAggregate, { query: JSON.stringify(query) }).map(x=>x[0])
     }
 
     public async findOneRecordByIdStream(id: any) {

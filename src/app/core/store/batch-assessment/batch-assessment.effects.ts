@@ -26,6 +26,20 @@ export class BatchAssessmentEffects {
       .catch(() => Observable.of({ type: batchAssessment.LOAD_FAIL }))
     );
 
+  @Effect() updateSubBatch$ = this.actions$
+    .ofType(batchAssessment.UPDATE)
+    .withLatestFrom(this._store.select(s => s.batchAssessment.entities))
+    .map(x=>x[1])
+    .switchMap(x => this.batchAssessmentService
+      .getSubBatchData(x.assessmentId, x.batchId, x.subBatchFilter)
+      .map(x=>{
+        console.log('getSubBatchData result', x)
+        return x;
+      })
+      .map(res => ({ type: batchAssessment.LOAD_SUCCESS, payload: res }))
+      .catch((err) => Observable.of({ type: batchAssessment.LOAD_FAIL, payload:err }))
+    );
+
   @Effect() updateAssess$ = this.actions$
     .ofType(batchAssessment.UPDATE_ASSESS)
     .map(toPayload)

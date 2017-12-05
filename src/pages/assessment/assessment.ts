@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy, AfterContentInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, OnInit, OnDestroy, AfterContentInit, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, Navbar, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 * Ionic pages and navigation.
 */
 
-@IonicPage()
+@IonicPage({priority: 'high'})
 @Component({
   selector: 'page-assessment',
   templateUrl: 'assessment.html',
@@ -48,17 +48,18 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
     }
   });
 
+  public loader:Loading;
+  public saver:Loading;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public _service: AssessmentPageService,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController
   ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AssessmentPage');
-  }
   ngOnInit() {
     // this._service.resolveParams({ idRef: '57a8d8deef449613775243a8', idAssessment: "580c05b412e1240010cd9d62" });
     // this.editable = true;
@@ -73,15 +74,15 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
     this.editable = this.navParams.get('queryParams')['editable'];
   }
   ngAfterContentInit() {
-    const loader = this.loadingCtrl.create({
-      content: "cargando evaluación..."
-    });
-    const saver = this.loadingCtrl.create({
-      content: "guardando en el servidor ..."
-    })
 
     this.unLoading = this.loading$.subscribe(x => {
-      if (x) { loader.present(); } else { loader.dismiss(); }
+      if (x) {
+        this.loader = this.loadingCtrl.create({
+          content: "cargando evaluación..."
+        });
+        this.loader.present(); 
+      } else if(this.loader){ 
+        this.loader.dismiss(); this.loader = undefined; }
     })
 
     this.unSaveStatus = this._service.saveSatus$
@@ -103,7 +104,14 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
       })
 
     this.unSaving = this._service.saving$.subscribe(x => {
-      if (x) { saver.present(); } else { saver.dismiss(); }
+      if (x) {
+        this.saver = this.loadingCtrl.create({
+          content: "guardando en el servidor ..."
+        })
+        this.saver.present(); 
+      } else if(this.saver){ 
+        this.saver.dismiss(); this.saver = undefined;
+      }
     })
 
 
@@ -125,6 +133,9 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
       this.unSaveStatus.unsubscribe();
     }
 
+    if (this.saver) { this.saver.dismiss(); this.saver = undefined; }
+    if (this.loader) { this.loader.dismiss(); this.loader = undefined; }
+
   }
 
 
@@ -140,6 +151,41 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
 
   public assessSave() {
     this.inActions$.next({ message: 'save' })
+  }
+
+  ionViewDidLoad() {
+    this.setBackButtonAction()
+  }
+  @ViewChild(Navbar) navBar: Navbar;
+
+  setBackButtonAction() {
+    this.navBar.backButtonClick = () => {
+      //Write here wherever you wanna do
+      //this.navCtrl.pop()
+      this.showConfirm()
+    }
+  }
+
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Deseas guardar los cambios ?',
+      //message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        },
+        {
+          text: 'Si',
+          handler: () => {
+            this.assessSave();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   // redirect() {

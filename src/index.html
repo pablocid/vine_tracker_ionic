@@ -9,7 +9,7 @@
   <meta name="msapplication-tap-highlight" content="no">
 
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4e8ef7">
 
   <!-- add to homescreen for ios -->
@@ -33,11 +33,11 @@
                 case 'installed':
                   if (navigator.serviceWorker.controller) {
                     // new update available
-                    alert("new update available")
+                    alert("Nueva versión disponible. Cierra y abre nuevamente la aplicación.")
                     resolve(true);
                   } else {
                     // no update available
-                    alert("no update available")
+                    //alert("no update available")
                     resolve(false);
                   }
                   break;

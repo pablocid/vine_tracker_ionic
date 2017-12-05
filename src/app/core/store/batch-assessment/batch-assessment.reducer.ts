@@ -44,6 +44,13 @@ export function BatchAssessmentReducer(state = initialState, action: batchAssess
       }
     }
 
+    case batchAssessment.UPDATE: {
+      return {
+        ...state,
+        loading: true,
+      }
+    }
+
     case batchAssessment.LOAD_SUCCESS: {
 
       return {

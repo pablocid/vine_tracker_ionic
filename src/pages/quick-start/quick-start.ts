@@ -9,10 +9,12 @@ import { LoadingController, Loading } from 'ionic-angular';
 //import * as Instascan from 'qr-code-scanner';
 //const Instascan = require('instascan')
 //const QRScanner = window.QRScanner
+//import Instascan from '../../../node_modules/instascan';
+
 import { QrScannerComponent } from '../../app/core/modules/angular2-qrscanner/src/qrscanner.component';
 
 declare var ImageCapture
-@IonicPage()
+@IonicPage({priority: 'high'})
 @Component({
   selector: 'page-quick-start',
   templateUrl: 'quick-start.html',
@@ -47,7 +49,6 @@ export class QuickStartPage implements AfterViewChecked, AfterViewInit, AfterCon
   ) {
   }
 
-
   @ViewChild('can') canvas: ElementRef;
   @ViewChild('vid') video: ElementRef;
   @ViewChild('fotoCanv') fotoCanv: ElementRef;
@@ -60,7 +61,19 @@ export class QuickStartPage implements AfterViewChecked, AfterViewInit, AfterCon
   ngAfterContentInit() { }
 
   ngAfterViewInit() { // wait for the view to init before using the element
-
+    //let scanner = new Instascan.Scanner({ video: this.video.nativeElement });
+    // scanner.addListener('scan', function (content) {
+    //   console.log(content);
+    // });
+    // Instascan.Camera.getCameras().then(function (cameras) {
+    //   if (cameras.length > 0) {
+    //     scanner.start(cameras[0]);
+    //   } else {
+    //     console.error('No cameras found.');
+    //   }
+    // }).catch(function (e) {
+    //   console.error(e);
+    // });
 
   }
 

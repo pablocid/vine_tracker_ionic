@@ -32,18 +32,21 @@ export class LoginPage implements OnInit, OnDestroy {
     private _service: LoginService,
     public loadingCtrl: LoadingController
   ) {
-    this._ling = this.loadingCtrl.create({ content: "login ..." })
   }
 
   ngOnInit() {
     this._unLoading = this._service.loading$.subscribe(x => {
-      if (x) { this._ling.present(); }
-      else { this._ling.dismissAll(); }
+      if (x) {
+        this._ling = this.loadingCtrl.create({ content: "login ..." });
+        this._ling.present(); 
+      }
+      else if(this._ling){ this._ling.dismissAll(); this._ling = undefined;}
     });
   }
 
   ngOnDestroy() {
     if (this._unLoading) { this._unLoading.unsubscribe(); }
+    if(this._ling){ this._ling.dismiss(); this._ling = undefined;}
   }
 
   ionViewDidLoad() {

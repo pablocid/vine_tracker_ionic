@@ -7,7 +7,9 @@ import { ActionSheetController, ActionSheet, Platform } from 'ionic-angular';
 import { HomeService } from './home.service';
 import { Subscription } from 'rxjs/Subscription';
 
-@IonicPage()
+@IonicPage({
+  priority: 'high'
+})
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -48,7 +50,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   private dismissLoading() {
     if (this._loading) {
-      this._loading.dismissAll();
+      this._loading.dismiss();
       this._loading = undefined;
     }
   }
@@ -128,6 +130,8 @@ export class HomePage implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.unCheckLoading) { this.unCheckLoading.unsubscribe(); }
     if (this.unIsUp) { this.unIsUp.unsubscribe(); }
+    this.dismissLoading();
+    this.dissmissSyncCheet();
   }
 
   goTo(page: string) {

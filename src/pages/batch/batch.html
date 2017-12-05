@@ -10,8 +10,13 @@
     <ion-toolbar color="primary">
       <ion-title style=" text-align:center;">{{assessmentName$ | async}}</ion-title>
       <div style="color:white; font-size:14px; text-align:center;">{{subBatchName$ | async}}</div>
-      <div *ngIf="updatingList$ | async"  style="color:white; font-size:12px; text-align:center;"> actualizando la lista de plantas ...</div>
+      <div *ngIf="updatingList$ | async" style="color:white; font-size:12px; text-align:center;"> actualizando la lista de plantas ...</div>
     </ion-toolbar>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="updateSubBatch()">
+        <ion-icon name="sync"></ion-icon>
+      </button>
+    </ion-buttons>
     <!-- <ion-title>{{assessmentName$ | async}}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only color="primary">
@@ -47,7 +52,8 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'evaluados'">
-      <button class="btn-batch-list" ion-item *ngFor="let element of evaluated$ | async" (click)="evaluar(element.schemaId , element.reference._id)" [ngClass]="{'isWarnClass': element.isWarn}">
+      <button class="btn-batch-list" ion-item *ngFor="let element of evaluated$ | async" (click)="evaluar(element.schemaId , element.reference._id)"
+        [ngClass]="{'isWarnClass': element.isWarn}">
         <ion-icon name="radio-button-on" item-start></ion-icon>
         {{element.reference | position}}
         <div style="font-size:16px;">último que evaluó: {{element.record | userName | async}}</div>
