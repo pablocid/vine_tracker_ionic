@@ -17,7 +17,6 @@ export class ScannerComponent implements OnInit, OnDestroy {
     constructor(
         private ref: ChangeDetectorRef
     ) { }
-
     
     @ViewChild('scanner') scanner: QrScannerComponent;
     @Output() code = new EventEmitter<string>();

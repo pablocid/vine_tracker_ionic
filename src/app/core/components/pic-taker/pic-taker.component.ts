@@ -182,7 +182,7 @@ export class PicTakerComponent implements OnInit, OnDestroy {
             (file.type === 'image/jpeg' || file.type === 'image/png')
         ) {
             let format = file.type === 'image/jpeg' ? 'jpg' : 'png';
-            const theName = `test.${newName}.${format}`;
+            const theName = `${newName}.${format}`;
             if(this._dbg){console.log('NewName', theName);}
 
             this.formData.append("file", file, theName);

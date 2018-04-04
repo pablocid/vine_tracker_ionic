@@ -11,7 +11,7 @@
   <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4e8ef7">
-
+<!-- npm run ionic:build --optimizejs --minifyjs --minifycss -->
   <!-- add to homescreen for ios -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -24,28 +24,24 @@
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js')
         .then((reg) => {
-          console.log('service worker installed');
-
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
             installingWorker.onstatechange = () => {
               switch (installingWorker.state) {
                 case 'installed':
                   if (navigator.serviceWorker.controller) {
-                    // new update available
                     alert("Nueva versión disponible. Cierra y abre nuevamente la aplicación.")
-                    resolve(true);
-                  } else {
-                    // no update available
-                    //alert("no update available")
-                    resolve(false);
-                  }
+                     return true;
+                  } else {return false;}
                   break;
+                default:
+                return true;
               }
+
             };
           };
         })
-        .catch(err => console.error('Error', err));
+        .catch(err => console.error('Error service-worker', err));
     }
   </script>
   <!-- <meta name="robots" content="noarchive"> -->

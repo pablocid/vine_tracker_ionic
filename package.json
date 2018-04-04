@@ -1,6 +1,6 @@
 {
-  "name": "myApp",
-  "version": "0.0.1",
+  "name": "VineTracker",
+  "version": "2.0.0",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -20,13 +20,13 @@
     "@angular/http": "5.0.2",
     "@angular/platform-browser": "5.0.2",
     "@angular/platform-browser-dynamic": "5.0.2",
-    "@ionic-native/barcode-scanner": "^4.3.3",
+    "@ionic-native/barcode-scanner": "^4.5.2",
     "@ionic-native/camera": "^4.3.3",
     "@ionic-native/core": "^4.3.2",
     "@ionic-native/file": "^4.3.3",
     "@ionic-native/file-path": "^4.3.3",
     "@ionic-native/photo-viewer": "^4.3.3",
-    "@ionic-native/qr-scanner": "^4.3.3",
+    "@ionic-native/qr-scanner": "^4.5.2",
     "@ionic-native/splash-screen": "4.4.2",
     "@ionic-native/status-bar": "4.4.2",
     "@ionic-native/transfer": "^3.14.0",
@@ -34,6 +34,7 @@
     "@ionic/storage": "2.1.3",
     "@ngrx/effects": "^4.1.0",
     "@ngrx/store": "^4.1.0",
+    "android-versions": "^1.2.1",
     "angular2-markdown": "^1.6.0",
     "angular2-qrcode": "^2.0.1",
     "angular2-uuid": "^1.1.1",
@@ -48,6 +49,7 @@
     "cordova-plugin-file-transfer": "^1.6.3",
     "cordova-plugin-filepath": "^1.1.0",
     "cordova-plugin-ionic-webview": "^1.1.16",
+    "cordova-plugin-qrscanner": "^2.5.0",
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-whitelist": "^1.3.1",
     "font-awesome": "^4.7.0",
@@ -58,6 +60,7 @@
     "lokijs": "^1.5.1",
     "ng2-img-max": "^2.1.9",
     "ngx-image2dataurl": "^1.0.0",
+    "phonegap-plugin-barcodescanner": "^7.0.0",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.18"
@@ -79,7 +82,9 @@
       "com-sarriaroman-photoviewer": {},
       "cordova-plugin-file": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-filepath": {}
+      "cordova-plugin-filepath": {},
+      "cordova-plugin-qrscanner": {},
+      "phonegap-plugin-barcodescanner": {}
     },
     "platforms": [
       "android"

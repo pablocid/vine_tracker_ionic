@@ -37,7 +37,7 @@ export class QuickStartPage implements AfterViewChecked, AfterViewInit, AfterCon
   public imageCapture: any;
   public imgSrc;
   public picInfo;
-  public searchOption: string = 'manual';
+  public searchOption: string = 'scan';
   private _unStatus: Subscription;
 
   constructor(
@@ -45,7 +45,6 @@ export class QuickStartPage implements AfterViewChecked, AfterViewInit, AfterCon
     public navParams: NavParams,
     private _service: QuickStartService,
     public loadingCtrl: LoadingController
-
   ) {
   }
 

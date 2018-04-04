@@ -2,16 +2,26 @@
   "manifest_version": 1,
   "name": "VineTracker 2.0",
   "short_name": "VineTracker",
-  "start_url": "/",
-  "launch_path": "/",
+  "start_url": "index.html",
   "display": "fullscreen",
-  "fullscreen": "true",
   "orientation": "portrait",
-  "icons": [{
-    "src": "assets/imgs/logo.png",
-    "sizes": "512x512",
-    "type": "image/png"
-  }],
+  "icons": [
+    {
+      "src": "assets/imgs/logo.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/logo_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/logo_1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ],
   "background_color": "#4e8ef7",
   "theme_color": "#4e8ef7"
 }

@@ -4,4 +4,4 @@ export { PositionPipe } from './position/position.pipe';
 export { UpdateInfoPipe } from './update-info/update-info.pipe';
 export { UserNamePipe } from './username.pipe';
 export { IsWarnPipe } from './is-warn.pipe';
-export {EditablePipe} from './editable.pipe';
+export { EditablePipe } from './editable.pipe';

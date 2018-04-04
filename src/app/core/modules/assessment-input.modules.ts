@@ -30,7 +30,7 @@ import {
     SelectionListComponent,
     NumberListComponent,
     MultipleSelectionComponent,
-    PictureListComponent, 
+    PictureListComponent,
     ImageDialogComponent,
     BaseInputComponent
 } from '../components/assessment/attribute-block/inputs';
@@ -51,7 +51,7 @@ const COMPONENTS = [
     PicTakerComponent
 ];
 @NgModule({
-    imports:[
+    imports: [
         ...IMPORTS,
     ],
     exports: [
@@ -64,7 +64,7 @@ const COMPONENTS = [
     entryComponents: [
         ...INPUTS_COMPONENTS
     ],
-    providers:[
+    providers: [
         PhotoViewer,
         Camera,
         FileNative,

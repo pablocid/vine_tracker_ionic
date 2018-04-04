@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy, AfterContentInit, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Navbar, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Navbar, AlertController, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from 'rxjs/Subject';
 import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
 import { AssessmentPageService } from './assessment.service';
-import { LoadingController, Loading } from 'ionic-angular';
 import { find } from 'lodash';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map';
@@ -18,7 +17,7 @@ import 'rxjs/add/operator/map';
 * Ionic pages and navigation.
 */
 
-@IonicPage({priority: 'high'})
+@IonicPage({ priority: 'high' })
 @Component({
   selector: 'page-assessment',
   templateUrl: 'assessment.html',
@@ -48,21 +47,29 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
     }
   });
 
-  public loader:Loading;
-  public saver:Loading;
+  public loader: Loading;
+  public saver: Loading;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public _service: AssessmentPageService,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController
   ) {
+  }
+
+
+  public presentModal() {
+    let modal = this.modalCtrl.create("AssessInfoModalPage", {recordInfo$: this.recordInfo$ });
+    modal.present();
   }
 
   ngOnInit() {
     // this._service.resolveParams({ idRef: '57a8d8deef449613775243a8', idAssessment: "580c05b412e1240010cd9d62" });
     // this.editable = true;
+    console.log('In Assessment PAGE')
 
     const params = this.navParams.get('params');
     if (params && params.idRef && params.idAssessment) {
@@ -80,9 +87,10 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
         this.loader = this.loadingCtrl.create({
           content: "cargando evaluación..."
         });
-        this.loader.present(); 
-      } else if(this.loader){ 
-        this.loader.dismiss(); this.loader = undefined; }
+        this.loader.present();
+      } else if (this.loader) {
+        this.loader.dismiss(); this.loader = undefined;
+      }
     })
 
     this.unSaveStatus = this._service.saveSatus$
@@ -108,8 +116,8 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
         this.saver = this.loadingCtrl.create({
           content: "guardando en el servidor ..."
         })
-        this.saver.present(); 
-      } else if(this.saver){ 
+        this.saver.present();
+      } else if (this.saver) {
         this.saver.dismiss(); this.saver = undefined;
       }
     })
@@ -168,19 +176,18 @@ export class AssessmentPage implements OnInit, OnDestroy, AfterContentInit {
 
   showConfirm() {
     let confirm = this.alertCtrl.create({
-      title: 'Deseas guardar los cambios ?',
+      title: 'Deseas salir sin guardar los cambios ?',
       //message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
       buttons: [
         {
-          text: 'No',
+          text: 'CANCELAR',
           handler: () => {
-            this.navCtrl.pop();
           }
         },
         {
-          text: 'Si',
+          text: 'SI',
           handler: () => {
-            this.assessSave();
+            this.navCtrl.pop();
           }
         }
       ]

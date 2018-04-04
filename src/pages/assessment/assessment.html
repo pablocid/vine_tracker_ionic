@@ -10,20 +10,16 @@
     <ion-toolbar color="primary">
       <ion-title>{{assessmentName$ | async}}</ion-title>
 
-      <ion-buttons end *ngIf="editable">
-        <button ion-button icon-only (click)="assessSave()">
-          <!-- <ion-icon name="archive"></ion-icon> -->
+      <ion-buttons end>
+        <button ion-button icon-only (click)="presentModal()" style="margin-right:20px;">
+            <i class="fa fa-info-circle" style="zoom:2.0;"></i>
+        </button>
+        <button *ngIf="editable" ion-button icon-only (click)="assessSave()">
           <i class="fa fa-save" style="zoom:2.0;"></i>
         </button>
       </ion-buttons>
-
     </ion-toolbar>
-    <!-- <ion-title>{{assessmentName$ | async}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only color="primary">
-        <ion-icon name="save"></ion-icon>
-      </button>
-    </ion-buttons> -->
+    <!-- <ion-title>{{assessmentName$ | async}}</ion-title> -->
   </ion-navbar>
 
 </ion-header>
@@ -31,7 +27,7 @@
 
 <ion-content>
   <ion-card-title text-center *ngIf="reference$ | async">
-   PLANTA {{ (reference$ | async | position)}}
+    PLANTA {{ (reference$ | async | position)}}
   </ion-card-title>
   <h1 *ngIf="!(loading$ | async) && !(allow$ | async)">Esta planta no se puede evaluar aún</h1>
 
